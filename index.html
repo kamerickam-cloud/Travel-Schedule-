@@ -1,188 +1,348 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Gold Fukuoka Travel 2026</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React & ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
-        body { background-color: #0a0a0a; font-family: 'Playfair Display', serif; }
-        .gold-text { color: #d4af37; }
-        .gold-border { border-color: #d4af37; }
-        .luxury-hover:hover { color: white; border-color: white; transform: translateY(-1px); }
-        .luxury-btn-hover:hover { background-color: #d4af37; color: black; border-color: #d4af37; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>曼谷自由行 - Architecture & Cuisine Tour</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Google Fonts -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+    .font-brutalist { font-family: 'Space Mono', monospace; }
+  </style>
 </head>
-<body>
-    <div id="root"></div>
+<body class="font-brutalist bg-[#F0F0F0]">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+  <div id="app"></div>
 
-        const Icon = ({ name, size = 16, className = "" }) => {
-            useEffect(() => {
-                if (window.lucide) window.lucide.createIcons();
-            }, [name]);
-            return <i data-lucide={name} className={className} style={{ width: size, height: size }}></i>;
-        };
+  <script>
+    // 1. 行程資料 (JSON 結構)
+    const tripData = [
+      {
+        day: 1,
+        date: "2026-09-06",
+        title: "啟程、經典市集與河岸光影",
+        coverImage: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?auto=format&fit=crop&w=600&q=80",
+        activities: [
+          { time: "06:00 - 07:30", location: "香港國際機場 (HKG)", category: "Airport", estimated_cost_thb: null, transportation: "自理", notes: "辦理登機手續及安檢 (Check-in & Security)。" },
+          { time: "08:00 - 11:30", location: "聯合航空航班 & 機場入境", category: "Flight", estimated_cost_thb: null, transportation: "飛機 (Flight)", notes: "包含 2h45m 飛行時間及降落後辦理入境 (Immigration) 與提取行李。09:45 降落為曼谷當地時間。" },
+          { time: "11:30 - 12:15", location: "搭乘機場快線 (ARL)", category: "Logistics", estimated_cost_thb: 45, transportation: "機場快線 (ARL)", notes: "前往機場 B 層 (Basement) 購票，搭乘 ARL 終點站 Phaya Thai 站。" },
+          { time: "12:15 - 13:00", location: "轉乘 BTS 前往酒店", category: "Logistics", estimated_cost_thb: 30, transportation: "BTS 轉 Skywalk", notes: "於 Phaya Thai 站轉乘 BTS 至 Chit Lom 站，出站後經高架行人天橋 (Skywalk) 直達 Centara Grand 辦理 Check-in。" },
+          { time: "13:00 - 14:00", location: "Nara Thai Cuisine (CentralWorld)", category: "Food", estimated_cost_thb: 650, transportation: "步行", image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=600&q=80", notes: "午餐：CentralWorld 內部，環境整潔。" },
+          { time: "14:45 - 17:30", location: "恰圖恰週末市集 (Chatuchak)", category: "Shopping", estimated_cost_thb: null, transportation: "BTS 至 Mo Chit", image: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?auto=format&fit=crop&w=600&q=80", notes: "集中於第 2-4 區 (Section 2-4) 設計師品牌區域。" },
+          { time: "18:30 - 20:30", location: "暹羅天地 (ICONSIAM)", category: "Food", estimated_cost_thb: 450, transportation: "BTS 轉金線", notes: "晚餐：室內仿傳統水上市場設計，具備空調。" },
+          { time: "20:30 - 21:15", location: "Centara Grand at CentralWorld", category: "Logistics", estimated_cost_thb: 43, transportation: "金線轉 BTS", notes: "經 Skywalk 返回酒店。" }
+        ]
+      },
+      {
+        day: 2,
+        date: "2026-09-07",
+        title: "經典皇家建築與精緻藝術料理",
+        coverImage: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80",
+        activities: [
+          { time: "09:00 - 09:45", location: "Tha Chang Pier", category: "Logistics", estimated_cost_thb: 77, transportation: "BTS 轉觀光船", notes: "藍旗船直達 Tha Chang 碼頭。" },
+          { time: "09:45 - 12:00", location: "曼谷大皇宮", category: "Architecture", estimated_cost_thb: 500, transportation: "步行", image: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=600&q=80", notes: "傳統建築群，需遵守嚴格服裝規範。" },
+          { time: "12:00 - 14:00", location: "Rongros Restaurant", category: "Food", estimated_cost_thb: 800, transportation: "步行或 TukTuk", notes: "午餐：隔河眺望黎明寺 (Wat Arun)。" },
+          { time: "14:00 - 15:30", location: "黎明寺 (Wat Arun)", category: "Architecture", estimated_cost_thb: 105, transportation: "過河渡船", image: "https://images.unsplash.com/photo-1606765962248-7ff407b51667?auto=format&fit=crop&w=600&q=80", notes: "白色高塔與瓷器鑲嵌建築風格。" },
+          { time: "15:30 - 16:30", location: "Centara Grand at CentralWorld", category: "Logistics", estimated_cost_thb: 77, transportation: "觀光船轉 BTS", notes: "返回酒店休息，避開午後高溫。" },
+          { time: "18:30 - 21:00", location: "Paste Bangkok", category: "Food", estimated_cost_thb: 3750, transportation: "步行", notes: "晚餐：米其林星級，傳統皇家菜現代演繹。" }
+        ]
+      },
+      {
+        day: 3,
+        date: "2026-09-08",
+        title: "泰式當代與傳統美學交織",
+        coverImage: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=80",
+        activities: [
+          { time: "10:00 - 11:30", location: "曼谷藝術文化中心 (BACC)", category: "Art", estimated_cost_thb: 0, transportation: "BTS 至 National Stadium", image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=80", notes: "現代環形建築設計，內有獨立藝廊。" },
+          { time: "11:30 - 13:30", location: "金湯普森博物館", category: "Architecture", estimated_cost_thb: 700, transportation: "步行", notes: "午餐：傳統紅木建築，內設泰式餐廳。" },
+          { time: "14:00 - 16:30", location: "Central Embassy", category: "Architecture", estimated_cost_thb: 300, transportation: "BTS 至 Ploenchit", notes: "考察 Open House 複合藝術與閱讀空間。" },
+          { time: "17:00 - 19:00", location: "Bhawa Spa on the eight", category: "Relaxation", estimated_cost_thb: 2250, transportation: "步行或 BTS", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", notes: "需提前預約以確保衛生與私密性。" },
+          { time: "19:30 - 21:30", location: "Baan Ying (Siam Center)", category: "Food", estimated_cost_thb: 500, transportation: "BTS 至 Siam", notes: "晚餐：標準化精緻家庭式泰菜。" }
+        ]
+      },
+      {
+        day: 4,
+        date: "2026-09-09",
+        title: "零售建築新地標與高空景觀",
+        coverImage: "https://images.unsplash.com/photo-1563514787595-5db0d603a116?auto=format&fit=crop&w=600&q=80",
+        activities: [
+          { time: "10:30 - 13:00", location: "EmSphere", category: "Architecture", estimated_cost_thb: 450, transportation: "BTS 至 Phrom Phong", notes: "工業風前衛商場，現代化室內街頭美食區。" },
+          { time: "13:00 - 15:30", location: "The Commons Thong Lo", category: "Architecture", estimated_cost_thb: 100, transportation: "BTS 至 Thong Lo", notes: "考察現代建築與社區營造 (Community Mall)。" },
+          { time: "15:30 - 17:00", location: "Centara Grand at CentralWorld", category: "Logistics", estimated_cost_thb: 0, transportation: "BTS 返回 Chit Lom", notes: "返回酒店休息，整理行程與裝備。" },
+          { time: "17:30 - 19:30", location: "Somboon Seafood (CentralWorld)", category: "Food", estimated_cost_thb: 1000, transportation: "步行", notes: "晚餐：建興酒家咖哩蟹，商場內部避開街邊衛生問題。" },
+          { time: "20:00 - 22:00", location: "Red Sky Bar Bangkok", category: "Entertainment", estimated_cost_thb: 900, transportation: "電梯直達", image: "https://images.unsplash.com/photo-1563514787595-5db0d603a116?auto=format&fit=crop&w=600&q=80", notes: "55樓高空觀景 (Rooftop Bar)。" }
+        ]
+      },
+      {
+        day: 5,
+        date: "2026-09-10",
+        title: "文化伴手禮與回程",
+        coverImage: "https://images.unsplash.com/photo-1569154941061-e231b47cc829?auto=format&fit=crop&w=600&q=80",
+        activities: [
+          { time: "09:30 - 11:30", location: "Gourmet Market CentralWorld", category: "Shopping", estimated_cost_thb: null, transportation: "步行", notes: "精品超市，適合採購伴手禮。" },
+          { time: "11:30 - 13:00", location: "Thong Smith CentralWorld", category: "Food", estimated_cost_thb: 400, transportation: "步行", notes: "午餐：船麵大王，傳統船麵精品化，衛生標準高。" },
+          { time: "13:00 - 14:30", location: "曼谷蘇凡納布機場 (BKK)", category: "Logistics", estimated_cost_thb: 75, transportation: "BTS 轉 ARL", notes: "酒店出發前往機場，辦理 Check-out。" },
+          { time: "14:30 - 16:30", location: "曼谷蘇凡納布機場 (BKK)", category: "Airport", estimated_cost_thb: null, transportation: "步行", image: "https://images.unsplash.com/photo-1569154941061-e231b47cc829?auto=format&fit=crop&w=600&q=80", notes: "辦理退稅 (VAT Refund)、登機手續及安檢。" },
+          { time: "17:30 - 21:15", location: "香港國際機場 (HKG)", category: "Flight", estimated_cost_thb: null, transportation: "飛機", notes: "聯合航空航班 (BKK -> HKG)。21:15 為香港當地時間。" }
+        ]
+      }
+    ];
 
-        const App = () => {
-            const [currentPage, setCurrentPage] = useState('home');
-            const [selectedDay, setSelectedDay] = useState(null);
+    // 2. 狀態管理與輔助函式
+    let currentView = 'home'; // 'home' or 1, 2, 3, 4, 5
+    let totalSpent = parseInt(localStorage.getItem('bkk_total_spent')) || 0;
+    const EXCHANGE_RATE = 0.22; // 預設匯率：1 THB ≈ 0.22 HKD
 
-            const tripData = {
-                1: { label: "I", date: "07 JUNE", title: "抵達福岡 / 燒肉之夜", events: [
-                    { time: "12:35", title: "航班 UO638", loc: "HKG → FUK", desc: "開啟九州之旅。" },
-                    { time: "18:00", title: "酒店入住", loc: "Via Inn Hakata", desc: "抵達博多市區，辦理入住手續並放置行李。" },
-                    { time: "18:30", title: "博多運河城", loc: "Canal City Hakata", desc: "步行約 12 分鐘。適合購買運動品牌、動漫周邊 (Jump Shop) 或逛 Muji。" },
-                    { time: "20:00", title: "晚餐：大東園", loc: "大東園 本店", desc: "預約 20:00。從運河城步行約 5 分鐘即可抵達這家老字號和牛燒肉店。" }
-                ]},
-                2: { label: "II", date: "08 JUNE", title: "天神商圈 / 我英特展", events: [
-                    { time: "10:00", title: "我英特展", loc: "天神三越", desc: "參觀我的英雄學院展覽。" },
-                    { time: "13:00", title: "午餐：Nasubi", loc: "天婦羅 なすび", desc: "享用精緻天婦羅。" },
-                    { time: "15:00", title: "天神核心商圈", loc: "天神地下街", desc: "福岡奢華購物區。" },
-                    { time: "20:00", title: "晚餐：鳥魚 古家", loc: "とりとさかな 古家", desc: "預約 20:00。地址：福岡市中央区平尾1-9-6。主打地雞料理與當季海鮮。" },
-                    { time: "STAY", title: "酒店休息", loc: "Via Inn Hakata", desc: "回到博多車站旁酒店。" }
-                ]},
-                3: { label: "III", date: "09 JUNE", title: "藥院散策 / 豆腐名店", events: [
-                    { time: "12:00", title: "午餐：Kamakiri", loc: "釜喜利うどん", desc: "精緻烏龍麵。" },
-                    { time: "14:30", title: "藥院法式甜點", loc: "Au fil du jour", desc: "地址：福岡市中央区平尾1-9-6。品嚐名店法式甜點，感受藥院區的高雅氛圍。" },
-                    { time: "20:30", title: "晚餐：三原豆腐店", loc: "三原豆腐店", desc: "預約 20:30。現代豆腐料理。" },
-                    { time: "STAY", title: "酒店休息", loc: "Via Inn Hakata", desc: "最後一晚入住博多 Via Inn。" }
-                ]},
-                4: { label: "IV", date: "10 JUNE", title: "系島自駕 / 海岸漫遊", events: [
-                    { time: "10:00", title: "系島海岸", loc: "櫻井二見ヶ浦", desc: "欣賞白色鳥居美景，享受慢節奏海岸自駕。" },
-                    { time: "14:00", title: "午餐：白浜家", loc: "糸島 牡蠣小屋 白浜家", desc: "海邊享用新鮮海產料理。" },
-                    { time: "STAY", title: "入住系島", loc: "梅屋旅館", desc: "入住糸島特色旅宿「梅屋旅館」，享受自然靜謐的一晚。" }
-                ]},
-                5: { label: "V", date: "11 JUNE", title: "悠閒全精華：日田自駕", events: [
-                    { time: "08:30", title: "糸島出發", loc: "梅屋旅館", desc: "在旅館享用早餐後出發前往日田方向。" },
-                    { time: "10:00", title: "福島八幡宮", loc: "福島八幡宮", desc: "位於八女市。欣賞精美的御朱印。" },
-                    { time: "12:15", title: "大山水壩午餐", loc: "道の駅 水辺の郷おおやま", desc: "看進擊的巨人銅像並享用午餐。" },
-                    { time: "13:45", title: "巨人 Museum (一館)", loc: "進撃の巨人 in HITA ミュージアム", desc: "觀看早期原稿。" },
-                    { time: "14:45", title: "巨人 Museum (二館)", loc: "サッポロビール九州日田工場", desc: "札幌啤酒工廠內的後期原稿展。" },
-                    { time: "16:00", title: "豆田町散步", loc: "豆田町", desc: "日田的小京都，適合漫步購物。" },
-                    { time: "18:00", title: "抵達酒店", loc: "Green Rich Hotel Kurume", desc: "入住並享用天然溫泉。" },
-                    { time: "20:00", title: "晚餐多選方案", loc: "Torisuke / Shohachiro / Vishnu", desc: "備選 1: Torisuke (02:00 關門)\n備選 2: Shohachiro Udon (21:00 關門)\n備選 3: インド料理ビスヌ 百年公園店 (22:00 關門)" }
-                ]},
-                6: { label: "VI", date: "12 JUNE", title: "太宰府參拜 / LaLaport 鋼彈", events: [
-                    { time: "10:00", title: "太宰府天滿宮", loc: "太宰府天滿宮", desc: "祈求學業與順利。" },
-                    { time: "14:30", title: "LaLaport 福岡", loc: "ららぽーと福岡", desc: "購物中心與 1:1 鋼彈。" },
-                    { time: "18:30", title: "晚餐：待定 / 拉麵", loc: "Pending / Ramen", desc: "根據當日疲累程度決定，備選拉麵名店。" },
-                    { time: "STAY", title: "酒店休息", loc: "Hotel Vessel Kaizuka", desc: "入住位於貝塚的 Vessel Hotel。" }
-                ]},
-                7: { label: "VII", date: "13 JUNE", title: "最終採買 / 歸途", events: [
-                    { time: "10:30", title: "AEON MALL 福岡", loc: "イオンモール福岡", desc: "大型賣場最後掃貨。" },
-                    { time: "14:30", title: "Marinoa City", loc: "マリノアシティ福岡", desc: "Outlet 品牌採買。" },
-                    { time: "17:30", title: "機場還車", loc: "福岡空港", desc: "辦理手續。" },
-                    { time: "20:35", title: "返程航班", loc: "FUK → HKG", desc: "搭乘 UO695 返回香港。" }
-                ]}
-            };
+    window.updateExpense = function(multiplier) {
+      const input = document.getElementById('expenseAmount');
+      const amount = parseInt(input.value);
+      if (!isNaN(amount) && amount > 0) {
+        totalSpent += amount * multiplier;
+        if (totalSpent < 0) totalSpent = 0;
+        localStorage.setItem('bkk_total_spent', totalSpent);
+        document.getElementById('displayTotal').innerText = `฿ ${totalSpent.toLocaleString()}`;
+        document.getElementById('displayTotalHkd').innerText = `≈ HK$ ${Math.round(totalSpent * EXCHANGE_RATE).toLocaleString()}`;
+        input.value = '';
+      }
+    };
 
-            const openInGoogleMaps = (location) => {
-                if (!location || location === "TBA" || location.includes("Pending") || location.includes("Torisuke")) return;
-                const searchQuery = location.split(' / ')[0].split(' → ')[0];
-                const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
-                window.open(url, '_blank');
-            };
+    function setView(view) {
+      currentView = view;
+      render();
+      window.scrollTo(0, 0);
+    }
 
-            const goBack = () => {
-                setCurrentPage('home');
-                window.scrollTo(0, 0);
-            };
+    const getGoogleMapsUrl = (location) => {
+      const query = location.includes("HKG") || location.includes("香港") ? location : `${location} Bangkok`;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    };
 
-            return (
-                <div className="min-h-screen text-[#d4af37] p-4 pb-20">
-                    {currentPage === 'home' ? (
-                        <div className="max-w-3xl mx-auto py-12">
-                            <header className="text-center mb-16">
-                                <p className="text-[10px] tracking-[0.6em] uppercase font-bold text-[#997b2d] mb-4">Private Collection 2026</p>
-                                <h1 className="text-6xl md:text-8xl font-light text-white uppercase tracking-widest mb-8 text-center">FUKUOKA</h1>
-                                <div className="flex justify-center items-center gap-6 text-[10px] tracking-[0.4em] text-[#997b2d] italic">
-                                    <span>06.07</span>
-                                    <Icon name="sparkles" size={12} className="text-[#d4af37]" />
-                                    <span>06.13</span>
-                                </div>
-                            </header>
-                            <div className="space-y-6">
-                                {Object.keys(tripData).map(key => (
-                                    <button key={key} onClick={() => { setSelectedDay(key); setCurrentPage('detail'); window.scrollTo(0,0); }} className="w-full bg-[#111] border border-[#2a2418] p-8 text-left hover:border-[#d4af37] transition-all group">
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <div className="text-[11px] text-[#997b2d] mb-2 uppercase tracking-widest font-bold">Day {tripData[key].label} • {tripData[key].date}</div>
-                                                <div className="text-2xl md:text-3xl text-white uppercase tracking-wider group-hover:text-[#d4af37] transition-colors">{tripData[key].title}</div>
-                                            </div>
-                                            <div className="w-10 h-10 rounded-full border border-[#2a2418] flex items-center justify-center group-hover:border-[#d4af37] group-hover:bg-[#d4af37]/5 transition-all">
-                                                <Icon name="chevron-right" size={20} className="text-[#997b2d]" />
-                                            </div>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="max-w-2xl mx-auto py-12">
-                            <button onClick={goBack} className="mb-12 text-[10px] uppercase tracking-[0.4em] flex items-center gap-2 hover:text-white transition-colors font-bold text-[#997b2d]">
-                                <Icon name="arrow-left" size={14} /> Back to Collection
-                            </button>
-                            <header className="mb-24">
-                                <span className="text-[11px] tracking-[0.4em] font-bold uppercase text-[#997b2d] block mb-4 italic underline underline-offset-8">Episode {tripData[selectedDay].label}</span>
-                                <h2 className="text-4xl md:text-5xl text-white uppercase tracking-tight italic">
-                                    {tripData[selectedDay].title}
-                                </h2>
-                            </header>
-                            
-                            <div className="space-y-20">
-                                {tripData[selectedDay].events.map((event, i) => (
-                                    <div key={i} className="border-l border-[#2a2418] pl-8 relative pb-4">
-                                        <div className="flex flex-col gap-4 mb-4">
-                                            <div className="text-4xl text-white font-light tracking-tighter">{event.time}</div>
-                                            <div className="flex items-center gap-4">
-                                                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#121212] border border-[#2a2418] rounded-full text-[10px] uppercase tracking-widest font-bold text-[#997b2d]">
-                                                    <Icon name="map-pin" size={12} /> {event.loc}
-                                                </div>
-                                                {(!event.loc.includes("TBA") && !event.loc.includes("/") && !event.loc.includes("Pending") && event.loc !== "HKG → FUK") && (
-                                                    <button 
-                                                        onClick={() => openInGoogleMaps(event.loc)} 
-                                                        className="w-8 h-8 rounded-full border border-[#d4af37] flex items-center justify-center text-[#d4af37] luxury-hover transition-all"
-                                                        title="View on Map"
-                                                    >
-                                                        <Icon name="compass" size={16} />
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="text-white text-xl mb-3 uppercase tracking-widest font-bold">{event.title}</div>
-                                        <div className="text-[#997b2d] text-sm whitespace-pre-line leading-relaxed italic opacity-80">{event.desc}</div>
-                                    </div>
-                                ))}
-                            </div>
-                            
-                            <div className="mt-24 pt-16 border-t border-[#2a2418] flex justify-center">
-                                <button 
-                                    onClick={goBack}
-                                    className="px-16 py-5 border border-[#d4af37] text-[#d4af37] text-[11px] uppercase tracking-[0.5em] font-bold luxury-btn-hover transition-all"
-                                >
-                                    Back to Collection
-                                </button>
-                            </div>
-                        </div>
-                    )}
+    const getCategoryStyle = (category) => {
+      const styles = {
+        Flight: { icon: "plane", bg: "bg-[#4D96FF]", color: "text-black" },
+        Airport: { icon: "plane", bg: "bg-[#4D96FF]", color: "text-black" },
+        Food: { icon: "utensils", bg: "bg-[#FF6B6B]", color: "text-black" },
+        Architecture: { icon: "building", bg: "bg-[#FFD93D]", color: "text-black" },
+        Art: { icon: "map", bg: "bg-[#6BCB77]", color: "text-black" },
+        Shopping: { icon: "shopping-bag", bg: "bg-[#FF9BE6]", color: "text-black" },
+        Logistics: { icon: "train", bg: "bg-[#E5E5E5]", color: "text-black" },
+        Relaxation: { icon: "coffee", bg: "bg-[#00E5FF]", color: "text-black" },
+        Entertainment: { icon: "sparkles", bg: "bg-[#FFB703]", color: "text-black" },
+      };
+      return styles[category] || { icon: "map-pin", bg: "bg-white", color: "text-black" };
+    };
+
+    // 3. 渲染主邏輯
+    function render() {
+      const appDiv = document.getElementById('app');
+      
+      if (currentView === 'home') {
+        appDiv.innerHTML = `
+          <div class="min-h-screen bg-[#E5E5E5] p-6 flex flex-col justify-center items-center relative overflow-hidden">
+            <!-- 背景裝飾 -->
+            <div class="absolute top-10 left-10 w-32 h-32 bg-[#FF6B6B] rounded-full border-4 border-black shadow-[8px_8px_0px_0px_#000]"></div>
+            <div class="absolute bottom-20 right-10 w-24 h-24 bg-[#4D96FF] border-4 border-black shadow-[8px_8px_0px_0px_#000] rotate-12"></div>
+            
+            <div class="relative z-10 w-full max-w-sm">
+              <!-- 大標題 -->
+              <div class="bg-white border-4 border-black p-6 mb-8 shadow-[8px_8px_0px_0px_#000] transform -rotate-2">
+                <h1 class="text-4xl font-black uppercase tracking-tighter leading-none mb-2">
+                  BANGKOK <br/>
+                  <span class="text-[#FF6B6B]">2026</span>
+                </h1>
+                <p class="font-bold text-sm border-t-4 border-black pt-2 mt-4 uppercase">
+                  Architecture & Cuisine Tour
+                </p>
+                <p class="text-xs font-black bg-[#FFD93D] inline-block px-2 py-1 mt-2 border-2 border-black">
+                  06 SEPT - 10 SEPT
+                </p>
+              </div>
+
+              <!-- 日期選擇按鈕 -->
+              <div class="flex flex-col gap-4">
+                ${tripData.map((day, index) => {
+                  const bgColors = ['bg-[#FF9BE6]', 'bg-[#4D96FF]', 'bg-[#6BCB77]', 'bg-[#FFD93D]', 'bg-[#00E5FF]'];
+                  const bgColor = bgColors[index % bgColors.length];
+                  
+                  return `
+                  <button onclick="setView(${day.day})" class="w-full group flex items-stretch justify-between ${bgColor} border-4 border-black p-3 shadow-[6px_6px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] transition-all active:shadow-none active:translate-x-2 active:translate-y-2 h-28 cursor-pointer">
+                    
+                    <!-- 左側文字 -->
+                    <div class="flex flex-col items-start justify-center text-left shrink-0 w-16">
+                      <span class="font-black text-2xl uppercase tracking-tighter text-black">D${day.day}</span>
+                      <span class="font-bold text-[9px] bg-black text-white border border-black px-1 py-0.5 mt-1">${day.date}</span>
+                    </div>
+                    
+                    <!-- 中間照片與標題預覽區 -->
+                    <div class="flex-1 mx-2 border-x-4 border-black relative overflow-hidden bg-black flex items-center justify-center">
+                      <img src="${day.coverImage}" alt="${day.title}" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
+                      <span class="relative z-10 font-bold text-xs sm:text-sm leading-tight text-white px-2 drop-shadow-[0_2px_2px_rgba(0,0,0,1)] text-center">
+                        ${day.title}
+                      </span>
+                    </div>
+
+                    <!-- 右側按鈕 -->
+                    <div class="w-10 shrink-0 flex items-center justify-center">
+                      <div class="w-10 h-10 bg-white text-black border-2 border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors">
+                        <i data-lucide="arrow-left" class="rotate-180 w-5 h-5"></i>
+                      </div>
+                    </div>
+                  </button>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        // 內頁渲染
+        const dayData = tripData.find(d => d.day === currentView);
+        
+        // 活動列表 HTML
+        const activitiesHTML = dayData.activities.map(activity => {
+          const style = getCategoryStyle(activity.category);
+          return `
+            <div class="relative flex items-start group">
+              <!-- 時間軸圖示圓點 -->
+              <div class="flex items-center justify-center w-12 h-12 rounded-full border-4 border-black shadow-[2px_2px_0px_0px_#000] shrink-0 z-10 ${style.bg} ${style.color}">
+                <i data-lucide="${style.icon}" class="w-6 h-6"></i>
+              </div>
+              
+              <!-- 內容卡片 -->
+              <div class="ml-4 w-full bg-white border-4 border-black shadow-[4px_4px_0px_0px_#000] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#000] transition-all overflow-hidden flex flex-col">
+                
+                ${activity.image ? `
+                  <div class="w-full h-32 border-b-4 border-black bg-black overflow-hidden relative">
+                    <img src="${activity.image}" alt="${activity.location}" class="w-full h-full object-cover transition-all duration-300 hover:scale-105" />
+                  </div>
+                ` : ''}
+
+                <div class="p-4">
+                  <!-- 時間與分類標籤 -->
+                  <div class="flex justify-between items-start mb-2 border-b-2 border-black pb-2">
+                    <div class="text-sm font-black text-black bg-[#FFD93D] border-2 border-black px-2 py-0.5 inline-flex items-center gap-1">
+                      <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                      ${activity.time}
+                    </div>
+                  </div>
+                  
+                  <!-- 地點名稱 -->
+                  <h3 class="font-black text-xl text-black uppercase leading-tight mb-3">
+                    ${activity.location}
+                  </h3>
+                  
+                  <!-- 操作與資訊列 -->
+                  <div class="flex flex-wrap gap-2 text-xs font-bold mb-3">
+                    <span class="bg-[#E5E5E5] border-2 border-black px-2 py-1 flex items-center gap-1">
+                      <i data-lucide="train" class="w-3.5 h-3.5"></i> ${activity.transportation}
+                    </span>
+                    ${activity.estimated_cost_thb !== null ? `
+                      <span class="bg-[#6BCB77] border-2 border-black px-2 py-1 flex items-center gap-1">
+                        ฿ ${activity.estimated_cost_thb} / PP
+                      </span>
+                    ` : ''}
+                  </div>
+                  
+                  <p class="text-sm font-medium text-black mb-4 flex items-start gap-2 bg-gray-50 p-2 border border-black">
+                    <i data-lucide="info" class="w-4 h-4 shrink-0 mt-0.5"></i>
+                    ${activity.notes}
+                  </p>
+
+                  <!-- Google Map 導航按鈕 -->
+                  <a 
+                    href="${getGoogleMapsUrl(activity.location)}" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="w-full flex items-center justify-center gap-2 bg-black text-white font-bold py-3 px-4 border-2 border-black hover:bg-[#4D96FF] hover:text-black hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#000] transition-all"
+                  >
+                    <i data-lucide="navigation" class="w-4 h-4"></i>
+                    NAVIGATE IN MAPS
+                  </a>
                 </div>
-            );
-        };
+              </div>
+            </div>
+          `;
+        }).join('');
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+        appDiv.innerHTML = `
+          <div class="min-h-screen bg-[#F0F0F0] pb-32">
+            <!-- 標題區塊 -->
+            <header class="bg-[#FF9BE6] border-b-4 border-black sticky top-0 z-20 shadow-[0px_4px_0px_0px_#000]">
+              <div class="max-w-md mx-auto p-4 flex items-center justify-between">
+                <div>
+                  <h1 class="text-2xl font-black uppercase tracking-tighter bg-white inline-block px-2 border-2 border-black">
+                    DAY ${dayData.day}
+                  </h1>
+                  <p class="text-xs font-bold text-black mt-1 bg-white border border-black px-1 inline-block">
+                    ${dayData.date}
+                  </p>
+                </div>
+                <button 
+                  onclick="setView('home')"
+                  class="bg-white border-2 border-black p-2 shadow-[2px_2px_0px_0px_#000] hover:bg-[#FFD93D] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[0px_0px_0px_0px_#000] transition-all cursor-pointer"
+                  aria-label="Back to home"
+                >
+                  <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                </button>
+              </div>
+              <div class="bg-black text-white text-sm font-bold p-2 px-4 uppercase tracking-widest overflow-hidden whitespace-nowrap">
+                ${dayData.title}
+              </div>
+            </header>
+
+            <main class="max-w-md mx-auto p-4 mt-4">
+              <!-- 行程時間軸 -->
+              <div class="space-y-6 relative before:absolute before:inset-0 before:ml-6 before:-translate-x-px before:h-full before:w-1 before:bg-black">
+                ${activitiesHTML}
+              </div>
+            </main>
+
+            <!-- 底部固定選單 -->
+            <div class="fixed bottom-0 left-0 w-full bg-white border-t-4 border-black p-4 z-30 shadow-[0px_-4px_0px_0px_rgba(0,0,0,0.1)] flex justify-between items-center max-w-md mx-auto inset-x-0">
+              <button 
+                onclick="setView('home')"
+                class="flex flex-col items-center justify-center bg-[#FF6B6B] border-4 border-black h-14 w-14 shadow-[4px_4px_0px_0px_#000] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all cursor-pointer shrink-0"
+                aria-label="Home"
+              >
+                <i data-lucide="home" class="w-6 h-6 text-black"></i>
+              </button>
+
+              <div class="flex-1 ml-3 bg-[#FFD93D] border-4 border-black p-2 shadow-[4px_4px_0px_0px_#000] flex flex-col justify-between">
+                <div class="flex justify-between items-start mb-1">
+                  <span class="text-[10px] font-bold uppercase bg-white border border-black px-1 tracking-wider mt-1">EXPENSE TRACKER</span>
+                  <div class="text-right">
+                    <span class="text-base font-black tracking-tighter block leading-none" id="displayTotal">฿ ${totalSpent.toLocaleString()}</span>
+                    <span class="text-[10px] font-bold text-white bg-black px-1 inline-block mt-0.5" id="displayTotalHkd">≈ HK$ ${Math.round(totalSpent * EXCHANGE_RATE).toLocaleString()}</span>
+                  </div>
+                </div>
+                <div class="flex gap-1 h-8">
+                  <input type="number" id="expenseAmount" placeholder="輸入金額..." class="w-full bg-white border-2 border-black px-2 text-sm font-bold outline-none placeholder-gray-500 min-w-0">
+                  <button onclick="updateExpense(1)" class="bg-[#6BCB77] border-2 border-black px-3 font-black text-black hover:bg-black hover:text-[#6BCB77] transition-colors active:translate-y-1 active:translate-x-1 active:shadow-none shadow-[2px_2px_0px_0px_#000]">
+                    +
+                  </button>
+                  <button onclick="updateExpense(-1)" class="bg-[#FF6B6B] border-2 border-black px-3 font-black text-black hover:bg-black hover:text-[#FF6B6B] transition-colors active:translate-y-1 active:translate-x-1 active:shadow-none shadow-[2px_2px_0px_0px_#000]">
+                    -
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      // 每次重新渲染 HTML 內容後，需要重新載入 Lucide SVG Icon
+      lucide.createIcons();
+    }
+
+    // 初始渲染
+    render();
+  </script>
 </body>
 </html>
