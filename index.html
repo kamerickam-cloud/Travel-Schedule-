@@ -99,7 +99,11 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
     // 1. 最終確定版行程資料 (Final JSON Structure) 
     const tripData = [
       {
@@ -178,10 +182,75 @@
       }
     ];
 
-    // 2. 狀態管理與輔助函式 (App State & Helpers)
+    // 2. 狀態管理與輔助函式 (App State & Firebase Sync)
     let currentView = 'home'; // 'home' 或是 1, 2, 3, 4, 5
-    let expenses = JSON.parse(localStorage.getItem('bkk_expenses')) || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    let expenses = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }; // 預設值，將由雲端資料瞬間覆寫
+    let isCloudSynced = false;
+    let currentUser = null;
     const EXCHANGE_RATE = 0.22; // 預設匯率：1 THB ≈ 0.22 HKD
+
+    // 🔥 Firebase Configuration (雲端連線設定)
+    // ⚠️ 部署至 GitHub 時，請將 fallbackConfig 替換為您專屬的 Firebase 專案金鑰
+    const fallbackConfig = {
+      apiKey: "AIzaSyAr15MvPpnTTzJ6uE1g7Cgp3adKaoE7Woc",
+      authDomain: "travel-schedule-ca7cc.firebaseapp.com",
+      projectId: "travel-schedule-ca7cc",
+      storageBucket: "travel-schedule-ca7cc.firebasestorage.app",
+      messagingSenderId: "553600457945",
+      appId: "1:553600457945:web:4c403aff9f622cbe3972c8"
+    };
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : fallbackConfig;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'bangkok-trip-shared-123';
+    const authToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    
+    // 定義所有同行朋友共同讀寫的雲端文件路徑
+    const ledgerDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'expenses', 'shared_ledger');
+
+    // 初始化雲端連線與即時監聽
+    async function initCloudSync() {
+      try {
+        if (authToken) {
+          await signInWithCustomToken(auth, authToken);
+        } else {
+          await signInAnonymously(auth);
+        }
+        currentUser = auth.currentUser;
+        
+        if (!currentUser) return;
+
+        // 綁定即時監聽 (任何人新增帳務，畫面瞬間同步更新)
+        onSnapshot(ledgerDocRef, (docSnap) => {
+          if (docSnap.exists()) {
+            expenses = docSnap.data();
+          } else {
+            setDoc(ledgerDocRef, expenses); // 第一次初始化雲端文件
+          }
+          isCloudSynced = true;
+          render(); // 資料更新後自動重新繪製畫面
+        }, (error) => {
+          console.error("雲端同步發生錯誤:", error);
+          isCloudSynced = false;
+          render();
+        });
+      } catch (error) {
+        console.error("Firebase 初始化失敗:", error);
+      }
+    }
+    initCloudSync();
+
+    // 輔助函數：將最新金額寫入雲端
+    async function syncToCloud() {
+      if (!currentUser) return;
+      try {
+        await setDoc(ledgerDocRef, expenses, { merge: true });
+      } catch (e) {
+        console.error("寫入雲端失敗:", e);
+      }
+    }
 
     const getPlannedCost = (dayNum) => {
       const day = tripData.find(d => d.day === dayNum);
@@ -195,18 +264,16 @@
       if (!isNaN(amount) && amount > 0 && typeof currentView === 'number') {
         expenses[currentView] = (expenses[currentView] || 0) + (amount * multiplier);
         if (expenses[currentView] < 0) expenses[currentView] = 0;
-        localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
-        input.value = ''; // 成功後清空輸入框
-        render();
+        syncToCloud(); // 取代 localStorage，改為寫入雲端同步
+        input.value = ''; 
       }
     };
 
-    // 優化版：點擊快捷鍵直接加入記帳總數，使操作更流暢，不用手動按新增
+    // 優化版：點擊快捷鍵直接寫入雲端總數
     window.quickAdd = function(val) {
       if (typeof currentView === 'number') {
         expenses[currentView] = (expenses[currentView] || 0) + val;
-        localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
-        render();
+        syncToCloud(); // 取代 localStorage，改為寫入雲端同步
       }
     };
 
@@ -222,16 +289,15 @@
 
     window.confirmReset = function() {
       expenses = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-      localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
+      syncToCloud(); // 取代 localStorage，將雲端資料歸零
       closeResetModal();
-      render();
     };
 
-    function setView(view) {
+    window.setView = function(view) {
       currentView = view;
       render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    };
 
     const getGoogleMapsUrl = (location) => {
       const query = location.includes("HKG") || location.includes("香港") ? location : `${location} Bangkok`;
@@ -257,6 +323,11 @@
     function render() {
       const appDiv = document.getElementById('app');
       
+      // 雲端同步狀態動態標籤 UI
+      const syncBadge = isCloudSynced 
+        ? `<span class="bg-emerald-400 text-black border-2 border-black px-2 py-0.5 text-[10px] md:text-xs font-bold flex items-center gap-1.5"><div class="w-1.5 h-1.5 bg-black rounded-full animate-ping"></div> CLOUD SYNCED</span>`
+        : `<span class="bg-slate-200 text-slate-500 border-2 border-black px-2 py-0.5 text-[10px] md:text-xs font-bold flex items-center gap-1.5">OFFLINE</span>`;
+
       if (currentView === 'home') {
         const totalSpent = Object.values(expenses).reduce((sum, val) => sum + val, 0);
         const totalPlanned = tripData.reduce((sum, day) => sum + getPlannedCost(day.day), 0);
@@ -265,9 +336,12 @@
           <!-- 橫幅標頭 (Banner Header) -->
           <div class="border-4 border-black bg-[#FFD93D] p-6 mb-8 brutalist-shadow-lg relative overflow-hidden">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4 relative z-10">
-              <span class="font-brutalist text-sm md:text-base font-bold bg-black text-[#FFD93D] px-3 py-1 border-2 border-black uppercase tracking-widest">
-                BANGKOK 2026
-              </span>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-brutalist text-sm md:text-base font-bold bg-black text-[#FFD93D] px-3 py-1 border-2 border-black uppercase tracking-widest">
+                  BANGKOK 2026
+                </span>
+                ${syncBadge}
+              </div>
               <span class="font-brutalist text-xs md:text-sm font-bold border-2 border-black px-2 py-1 bg-white">
                 06 SEPT - 10 SEPT
               </span>
