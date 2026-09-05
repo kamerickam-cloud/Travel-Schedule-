@@ -21,13 +21,9 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* 自訂粗獷主義陰影 */
-    .brutalist-shadow {
-      box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
-    }
-    .brutalist-shadow-lg {
-      box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
-    }
+    /* 粗獷主義陰影 */
+    .brutalist-shadow { box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); }
+    .brutalist-shadow-lg { box-shadow: 8px 8px 0px 0px rgba(0,0,0,1); }
     .brutalist-shadow-hover:hover {
       transform: translate(-2px, -2px);
       box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
@@ -37,25 +33,23 @@
       box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
     }
 
-    /* 新增 CSS 圖形紋理 (Memphis / Pop Art Style Patterns) 取代圖片 */
-    
-    /* 1. 鮮豔波卡圓點 (Vibrant Polka Dots) */
+    /* 1. 鮮豔波卡圓點 */
     .bg-pattern-dots {
-      background-color: #FF9BE6; /* 亮粉色底 */
+      background-color: #FF9BE6;
       background-image: radial-gradient(#FF005C 4px, transparent 4px), radial-gradient(#FF005C 4px, transparent 4px);
       background-size: 32px 32px;
       background-position: 0 0, 16px 16px;
     }
     
-    /* 2. 斜條紋交錯 (Diagonal Stripes) */
+    /* 2. 斜條紋交錯 */
     .bg-pattern-lines {
-      background-color: #4D96FF; /* 亮藍色底 */
+      background-color: #4D96FF;
       background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.8) 10px, rgba(255, 255, 255, 0.8) 20px);
     }
     
-    /* 3. 十字星標 (Crosses / Plus Signs) */
+    /* 3. 十字星標 */
     .bg-pattern-grid {
-      background-color: #6BCB77; /* 亮綠色底 */
+      background-color: #6BCB77;
       background-image: 
         linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), 
         linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
@@ -63,9 +57,9 @@
       background-size: 32px 32px;
     }
     
-    /* 4. 鋸齒波浪 (Zig-Zag / Chevron) */
+    /* 4. 鋸齒波浪 */
     .bg-pattern-check {
-      background-color: #FFD93D; /* 鮮黃色底 */
+      background-color: #FFD93D;
       background-image: 
         linear-gradient(135deg, #FF7B00 25%, transparent 25%),
         linear-gradient(225deg, #FF7B00 25%, transparent 25%),
@@ -76,9 +70,9 @@
       background-repeat: repeat;
     }
     
-    /* 5. 棋盤格變體 (Offset Checkerboard) */
+    /* 5. 棋盤格變體 */
     .bg-pattern-blocks {
-      background-color: #00E5FF; /* 亮青色底 */
+      background-color: #00E5FF;
       background-image: 
         linear-gradient(45deg, #005CFF 25%, transparent 25%, transparent 75%, #005CFF 75%, #005CFF),
         linear-gradient(-45deg, #005CFF 25%, transparent 25%, transparent 75%, #005CFF 75%, #005CFF);
@@ -91,20 +85,22 @@
   <!-- 應用程式渲染主容器 -->
   <div id="app" class="max-w-4xl mx-auto"></div>
 
-  <!-- 整合式彈出確認視窗 (代替 browser confirm) -->
+  <!-- 整合式彈出確認視窗 (防呆機制) -->
   <div id="custom-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white border-4 border-black p-6 max-w-sm w-full brutalist-shadow-lg">
-      <h3 class="text-xl font-bold font-brutalist mb-2 text-rose-500 uppercase">⚠ 確認清除 (CLEAR)</h3>
+    <div class="bg-white border-4 border-black p-6 max-w-sm w-full brutalist-shadow-lg transform transition-all">
+      <h3 class="text-xl font-bold font-brutalist mb-2 text-rose-500 uppercase flex items-center gap-2">
+        <i data-lucide="alert-triangle"></i> ⚠ 確認清除 (CLEAR)
+      </h3>
       <p class="text-slate-700 font-bold mb-6">確定要清除所有已記錄的記帳支出嗎？此動作將無法復原。</p>
       <div class="flex gap-4">
-        <button onclick="confirmReset()" class="flex-1 border-4 border-black bg-rose-400 font-black py-2 hover:bg-rose-500 transition active:translate-y-0.5">清除</button>
-        <button onclick="closeResetModal()" class="flex-1 border-4 border-black bg-slate-200 font-black py-2 hover:bg-slate-300 transition active:translate-y-0.5">取消</button>
+        <button onclick="confirmReset()" class="flex-1 border-4 border-black bg-rose-400 font-black py-2 hover:bg-rose-500 transition active:translate-y-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">清除 (CLEAR)</button>
+        <button onclick="closeResetModal()" class="flex-1 border-4 border-black bg-slate-200 font-black py-2 hover:bg-slate-300 transition active:translate-y-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">取消 (CANCEL)</button>
       </div>
     </div>
   </div>
 
   <script>
-    // 1. 行程資料 (JSON 結構) - 更新使用的 Pattern 類別，移除圖片
+    // 1. 最終確定版行程資料 (Final JSON Structure) 
     const tripData = [
       {
         day: 1,
@@ -115,11 +111,12 @@
           { time: "06:00 - 07:30", location: "香港國際機場 (HKG)", category: "Airport", estimated_cost_thb: null, transportation: "自理", notes: "辦理登機手續及安檢 (Check-in & Security)。" },
           { time: "08:00 - 11:30", location: "聯合航空航班 & 機場入境", category: "Flight", estimated_cost_thb: null, transportation: "飛機 (Flight)", notes: "包含 2h45m 飛行時間及降落後辦理入境 (Immigration) 與提取行李。09:45 降落為曼谷當地時間。" },
           { time: "11:30 - 12:15", location: "搭乘機場快線 (ARL)", category: "Logistics", estimated_cost_thb: 45, transportation: "機場快線 (ARL)", notes: "前往機場 B 層 (Basement) 購票，搭乘 ARL 至終點站 Phaya Thai 站。" },
-          { time: "12:15 - 13:00", location: "Centara Grand & Bangkok Convention Centre at Central World", category: "Logistics", estimated_cost_thb: 30, transportation: "BTS 轉 Skywalk", notes: "於 Phaya Thai 站轉乘 BTS 至 Chit Lom 站，出站後經高架行人天橋 (Skywalk) 直達酒店辦理 Check-in。" },
+          { time: "12:15 - 13:00", location: "Centara Grand at Central World", category: "Logistics", estimated_cost_thb: 30, transportation: "BTS 轉 Skywalk", notes: "於 Phaya Thai 站轉乘 BTS 至 Chit Lom 站，出站後經高架行人天橋 (Skywalk) 直達酒店辦理 Check-in。" },
           { time: "13:00 - 14:00", location: "Nara Thai Cuisine (CentralWorld)", category: "Food", estimated_cost_thb: 650, transportation: "步行", notes: "午餐：CentralWorld 內部，環境整潔。" },
           { time: "14:45 - 17:30", location: "恰圖恰週末市集 (Chatuchak)", category: "Shopping", estimated_cost_thb: 500, transportation: "BTS 至 Mo Chit", notes: "集中於第 2-4 區 (Section 2-4) 設計師品牌區域。" },
-          { time: "18:30 - 20:30", location: "暹羅天地 (ICONSIAM)", category: "Food", estimated_cost_thb: 450, transportation: "BTS 轉金線", notes: "晚餐：室內仿傳統水上市場設計，具備空調。" },
-          { time: "20:30 - 21:15", location: "Centara Grand & Bangkok Convention Centre at Central World", category: "Logistics", estimated_cost_thb: 43, transportation: "金線轉 BTS", notes: "經 Skywalk 返回酒店。" }
+          { time: "17:30 - 18:00", location: "前往 Siam 商圈", category: "Logistics", estimated_cost_thb: 47, transportation: "BTS", notes: "從 Mo Chit 站搭乘 BTS 綠線，免轉車直達 Siam 站。" },
+          { time: "18:00 - 20:30", location: "Siam Paragon & Siam Square", category: "Shopping", estimated_cost_thb: 800, transportation: "步行", notes: "晚餐與夜間漫步：Siam Paragon (暹羅百麗宮) 是曼谷最具指標性的巨型商場，適合晚餐。飯後可漫步至對面的 Siam Square 步行街 (曼谷版原宿)，感受充滿活力的夜間潮流攤位與文創小店。" },
+          { time: "20:30 - 21:00", location: "返回酒店休息", category: "Logistics", estimated_cost_thb: 0, transportation: "步行 (Skywalk)", notes: "經由高架行人天橋 (Skywalk)，從 Siam 區穿過 CentralWorld 悠閒步行即可直接回到酒店。" }
         ]
       },
       {
@@ -128,14 +125,14 @@
         title: "經典皇家建築與精緻藝術料理",
         pattern: "bg-pattern-lines",
         activities: [
-          { time: "09:00 - 09:45", location: "Tha Chang Pier", category: "Logistics", estimated_cost_thb: 77, transportation: "BTS 轉觀光船", notes: "藍旗船直達 Tha Chang 碼頭。" },
+          { time: "09:00 - 09:45", location: "前往大皇宮 (Transport to Grand Palace)", category: "Logistics", estimated_cost_thb: 150, transportation: "Grab 或 MRT", notes: "由市區酒店呼叫 Grab，或搭乘地鐵至 MRT Sanam Chai 站後步行前往。" },
           { time: "09:45 - 12:00", location: "曼谷大皇宮", category: "Architecture", estimated_cost_thb: 500, transportation: "步行", notes: "傳統建築群，需遵守嚴格服裝規範。" },
-          { time: "12:00 - 14:00", location: "J's Restaurant Thatien", category: "Food", estimated_cost_thb: 500, transportation: "步行", notes: "午餐：改至 J's Restaurant Thatien (294 Maharat Rd, Phra Borom Maha Ratchawang, Phra Nakhon, Bangkok 10200泰國)，主打在地泰式家常料理與美味海鮮，性價比極高。" },
+          { time: "12:00 - 14:00", location: "J's Restaurant Thatien", category: "Food", estimated_cost_thb: 500, transportation: "步行", notes: "午餐：在地泰式家常料理與美味海鮮，性價比極高。" },
           { time: "14:00 - 15:30", location: "黎明寺 (Wat Arun)", category: "Architecture", estimated_cost_thb: 105, transportation: "過河渡船", notes: "白色高塔與瓷器鑲嵌建築風格。" },
-          { time: "15:30 - 16:30", location: "交通往 Chit Lom 商業區", category: "Logistics", estimated_cost_thb: 60, transportation: "MRT 轉 BTS", notes: "由 MRT Sanam Chai 站搭乘地鐵至 Sukhumvit 站，再轉乘 BTS 至 Chit Lom 站，以便前往市中心商圈。" },
-          { time: "16:30 - 18:30", location: "CentralWorld (เซ็นทรัลเวิลด์)", category: "Architecture", estimated_cost_thb: 250, transportation: "步行", notes: "下午行程：取消原定暹羅博物館，改為考察緊鄰酒店與 Gaysorn 的超大型商業地標 CentralWorld。觀察其宏偉的挑空零售空間結構與最新泰國本地旗艦店的視覺陳列。" },
-          { time: "18:30 - 21:00", location: "Paste Bangkok", category: "Food", estimated_cost_thb: 3750, transportation: "步行", notes: "晚餐：米其林星級，傳統皇家菜現代演繹，位於 Gaysorn Village 內部。" },
-          { time: "21:00 - 22:30", location: "水門市場夜市 (Pratunam Night Market)", category: "Entertainment", estimated_cost_thb: 300, transportation: "步行或 TukTuk", notes: "深夜加開行程：從 Paste 步行或搭乘 TukTuk 穿過運河即可抵達。體驗曼谷最道地的夜生活批發街區與路邊平價泰式小吃文化。" }
+          { time: "15:30 - 16:15", location: "前往 ICONSIAM", category: "Logistics", estimated_cost_thb: 30, transportation: "觀光船", notes: "從 Wat Arun 碼頭搭乘昭披耶河觀光船 (橘/藍旗) 順流而下，直達 ICONSIAM。" },
+          { time: "16:15 - 19:00", location: "ICONSIAM 暹羅天地", category: "Shopping", estimated_cost_thb: 1000, transportation: "步行", notes: "東南亞最大綜合商場，考察頂級國際精品區的建築陳列設計。" },
+          { time: "19:00 - 21:00", location: "SookSiam 室內水上市場 (ICONSIAM)", category: "Food", estimated_cost_thb: 800, transportation: "步行", notes: "晚餐：在商場 G 樓享用來自泰國 77 個府的道地美食，享受冷氣房內的傳統市場氛圍。" },
+          { time: "21:00 - 22:30", location: "返回酒店休息", category: "Logistics", estimated_cost_thb: 60, transportation: "金線 轉 BTS", notes: "搭乘無人駕駛的 BTS 金線轉乘綠線返回市區酒店。" }
         ]
       },
       {
@@ -144,11 +141,12 @@
         title: "泰式當代與傳統美學交織",
         pattern: "bg-pattern-grid",
         activities: [
-          { time: "10:00 - 11:30", location: "曼谷藝術文化中心 (BACC)", category: "Art", estimated_cost_thb: 0, transportation: "BTS 至 National Stadium", notes: "現代環形建築設計，內有獨立藝廊。" },
-          { time: "11:30 - 14:00", location: "MOCA 曼谷當代藝術博物館", category: "Art", estimated_cost_thb: 600, transportation: "BTS/SRT 或 Grab", notes: "午餐與美學考察：取代 Siam Discovery，改前往 MOCA 欣賞泰國極具張力的當代藝術藏品與令人驚豔的純白光影幾何建築空間。預算包含門票 (約280 THB)、交通與簡餐時間。" },
-          { time: "14:00 - 16:30", location: "One Bangkok", category: "Architecture", estimated_cost_thb: 300, transportation: "Grab 或 BTS 轉 MRT", notes: "曼谷最新巨型綜合地標 (Mega-project)。考察其前衛建築、Art Loop 藝術廊與綠帶空間。" },
-          { time: "16:30 - 19:00", location: "班嘉奇蒂森林公園 (Benjakitti Forest Park)", category: "Relaxation", estimated_cost_thb: 100, transportation: "MRT 或步行", notes: "下午行程優化：取消 Bhawa Spa 預約。改前往曼谷近年獲獎無數的都市濕地公園，在夕陽時分漫步於其極具建築設計美感的空中懸空步道 (Canopy Walk)，拍攝現代高樓與綠洲共生景致。" },
-          { time: "19:30 - 22:00", location: "Asiatique 河濱碼頭夜市", category: "Entertainment", estimated_cost_thb: 800, transportation: "BTS 至 Saphan Taksin 轉接駁船", notes: "晚餐及散步：由19世紀舊碼頭改建的復古時尚夜市，臨河吹風極為乾淨，有摩天輪及多間精緻餐廳。" }
+          { time: "10:00 - 11:30", location: "曼谷藝術文化中心 (BACC)", category: "Art", estimated_cost_thb: 0, transportation: "BTS 至 National Stadium", notes: "現代環形建築設計，內有獨立藝廊與豐富展覽。" },
+          { time: "11:30 - 12:15", location: "交通往 River City", category: "Logistics", estimated_cost_thb: 100, transportation: "BTS 轉 TukTuk/Grab", notes: "前往昭披耶河畔的藝術中心。" },
+          { time: "12:15 - 15:00", location: "River City Bangkok", category: "Art", estimated_cost_thb: 600, transportation: "步行", notes: "午餐與藝術巡禮：指標性古董與當代藝術商場，可在此享用午餐並欣賞河景。" },
+          { time: "15:00 - 17:00", location: "Warehouse 30", category: "Art", estimated_cost_thb: 350, transportation: "步行", notes: "距離 River City 步行 5 分鐘。二戰舊倉庫改建的重工業風文創聚落，適合下午茶休息。" },
+          { time: "17:00 - 18:00", location: "前往 Asiatique", category: "Logistics", estimated_cost_thb: 100, transportation: "Grab 或 渡船", notes: "沿著石龍軍路往南移動。可步行回碼頭搭船或直接呼叫 Grab。" },
+          { time: "18:00 - 21:30", location: "Asiatique 河濱碼頭夜市", category: "Entertainment", estimated_cost_thb: 800, transportation: "步行", notes: "晚餐及夜間散步：19世紀舊碼頭改建的復古夜市，臨河吹風極為乾淨。" }
         ]
       },
       {
@@ -157,12 +155,12 @@
         title: "零售建築新地標與高空景觀",
         pattern: "bg-pattern-check",
         activities: [
-          { time: "10:30 - 13:00", location: "EmSphere", category: "Architecture", estimated_cost_thb: 450, transportation: "BTS 至 Phrom Phong", notes: "工業風前衛商場，現代化室內街頭美食區。" },
-          { time: "13:00 - 15:30", location: "The Commons Thong Lo", category: "Architecture", estimated_cost_thb: 100, transportation: "BTS 至 Thong Lo", notes: "考察現代建築與社區營造 (Community Mall)。" },
-          { time: "15:30 - 17:00", location: "Marché Thonglor", category: "Architecture", estimated_cost_thb: 300, transportation: "步行或 TukTuk", notes: "曼谷最新垂直綠化商場，擁有流線型純白空中步道與鮮黃色旋轉樓梯。純視覺與空間美學享受，無需閱讀泰文即可感受設計魅力，適合拍照與喝杯下午茶。" },
-          { time: "17:00 - 17:30", location: "前往 Siam Discovery", category: "Logistics", estimated_cost_thb: 60, transportation: "BTS 轉步行", notes: "由 Thong Lo 站搭乘 BTS 至 Siam 站，出站後經商場連通道前往晚餐地點。" },
-          { time: "17:30 - 19:30", location: "KungThong Seafood (Siam Discovery 3F)", category: "Food", estimated_cost_thb: 1500, transportation: "步行", notes: "晚餐：Siam Discovery 3樓。營業至 21:00，主打泰南風味海鮮，推薦必點乾煎大河蝦。" },
-          { time: "20:00 - 22:00", location: "Red Sky Bar Bangkok", category: "Entertainment", estimated_cost_thb: 900, transportation: "電梯直達", notes: "55樓高空觀景 (Rooftop Bar)。" }
+          { time: "10:30 - 13:30", location: "EmSphere", category: "Architecture", estimated_cost_thb: 600, transportation: "BTS 至 Phrom Phong", notes: "早晨至午餐：曼谷最新話題商場。極具工業風與未來感的建築設計，底層有精彩室內街頭美食區。" },
+          { time: "13:30 - 14:00", location: "前往 Siam 商圈", category: "Logistics", estimated_cost_thb: 35, transportation: "BTS", notes: "從 Phrom Phong 站搭乘 BTS 綠線直達 Siam 站，免轉車。" },
+          { time: "14:00 - 16:00", location: "Siam Center", category: "Shopping", estimated_cost_thb: 1500, transportation: "步行", notes: "下午第一站：前衛暗黑工業風設計，泰國本土設計師與獨立文創精品集中地 (推薦 1F Absolute Siam Store)。" },
+          { time: "16:00 - 18:00", location: "Siam Discovery", category: "Architecture", estimated_cost_thb: 1500, transportation: "室內連通道", notes: "下午第二站：Siam Center 逛完直接經空橋進入。欣賞日本大師 Nendo 操刀的實驗室主題美學。" },
+          { time: "18:00 - 19:30", location: "KungThong Seafood (Siam Discovery 3F)", category: "Food", estimated_cost_thb: 1500, transportation: "步行", notes: "晚餐：就在 Siam Discovery 內。主打泰南風味海鮮，必點乾煎大河蝦。" },
+          { time: "19:45 - 22:00", location: "Red Sky Bar Bangkok", category: "Entertainment", estimated_cost_thb: 900, transportation: "步行與電梯直達", notes: "經由 Skywalk 走回 Centara Grand 酒店，直達 55 樓享受微醺曼谷夜景。" }
         ]
       },
       {
@@ -171,16 +169,16 @@
         title: "文化伴手禮與回程",
         pattern: "bg-pattern-blocks",
         activities: [
-          { time: "09:30 - 11:30", location: "Gourmet Market CentralWorld", category: "Shopping", estimated_cost_thb: 1000, transportation: "步行", notes: "精品超市，適合採購伴手禮。" },
-          { time: "11:30 - 13:00", location: "Thong Smith CentralWorld", category: "Food", estimated_cost_thb: 400, transportation: "步行", notes: "午餐：船麵大王，傳統船麵精品化，衛生標準高。" },
-          { time: "13:00 - 14:30", location: "曼谷蘇凡納布機場 (BKK)", category: "Logistics", estimated_cost_thb: 75, transportation: "BTS 轉 ARL", notes: "酒店出發前往機場，辦理 Check-out。" },
-          { time: "14:30 - 16:30", location: "曼谷蘇凡納布機場 (BKK)", category: "Airport", estimated_cost_thb: null, transportation: "步行", notes: "辦理退稅 (VAT Refund)、登機手續及安檢。" },
-          { time: "17:30 - 21:15", location: "香港國際機場 (HKG)", category: "Flight", estimated_cost_thb: null, transportation: "飛機", notes: "聯合航空航班 (BKK -> HKG)。21:15 為香港當地時間。" }
+          { time: "09:30 - 11:30", location: "Gourmet Market CentralWorld", category: "Shopping", estimated_cost_thb: 1000, transportation: "步行 (酒店樓下)", notes: "精品超市採購伴手禮。💡建議早上先辦理 Check-out，將行李寄放於酒店禮賓部 (Concierge)，再輕鬆逛街。" },
+          { time: "11:30 - 13:00", location: "Thong Smith CentralWorld", category: "Food", estimated_cost_thb: 400, transportation: "步行", notes: "午餐：船麵大王。就在商場內，吃完後即可慢慢走回酒店大廳。" },
+          { time: "13:00 - 14:30", location: "前往曼谷蘇凡納布機場 (BKK)", category: "Logistics", estimated_cost_thb: 75, transportation: "BTS 轉 ARL", notes: "從酒店櫃檯領回行李，經 Skywalk 前往 BTS Chit Lom 站，搭至 Phaya Thai 轉乘機場快線 (ARL)。" },
+          { time: "14:30 - 16:30", location: "曼谷蘇凡納布機場 (BKK)", category: "Airport", estimated_cost_thb: null, transportation: "步行", notes: "提早 3 小時抵達。先辦理退稅海關蓋章 (VAT Refund)、登機手續及安檢。" },
+          { time: "17:30 - 21:15", location: "香港國際機場 (HKG)", category: "Flight", estimated_cost_thb: null, transportation: "飛機", notes: "聯合航空航班 (BKK -> HKG)。21:15 為香港當地時間，結束完美旅程。" }
         ]
       }
     ];
 
-    // 2. 狀態管理與輔助函式
+    // 2. 狀態管理與輔助函式 (App State & Helpers)
     let currentView = 'home'; // 'home' 或是 1, 2, 3, 4, 5
     let expenses = JSON.parse(localStorage.getItem('bkk_expenses')) || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
     const EXCHANGE_RATE = 0.22; // 預設匯率：1 THB ≈ 0.22 HKD
@@ -198,15 +196,17 @@
         expenses[currentView] = (expenses[currentView] || 0) + (amount * multiplier);
         if (expenses[currentView] < 0) expenses[currentView] = 0;
         localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
+        input.value = ''; // 成功後清空輸入框
         render();
       }
     };
 
+    // 優化版：點擊快捷鍵直接加入記帳總數，使操作更流暢，不用手動按新增
     window.quickAdd = function(val) {
-      const input = document.getElementById('expenseAmount');
-      if (input) {
-        const currentVal = parseInt(input.value) || 0;
-        input.value = currentVal + val;
+      if (typeof currentView === 'number') {
+        expenses[currentView] = (expenses[currentView] || 0) + val;
+        localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
+        render();
       }
     };
 
@@ -253,7 +253,7 @@
       return styles[category] || { icon: "map-pin", bg: "bg-white", text: "text-black" };
     };
 
-    // 3. 渲染主邏輯
+    // 3. 渲染主邏輯 (Main Rendering Function)
     function render() {
       const appDiv = document.getElementById('app');
       
@@ -261,10 +261,10 @@
         const totalSpent = Object.values(expenses).reduce((sum, val) => sum + val, 0);
         const totalPlanned = tripData.reduce((sum, day) => sum + getPlannedCost(day.day), 0);
 
-        appDiv.innerHTML = `
+        let htmlContent = `
           <!-- 橫幅標頭 (Banner Header) -->
-          <div class="border-4 border-black bg-[#FFD93D] p-6 mb-8 brutalist-shadow-lg">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div class="border-4 border-black bg-[#FFD93D] p-6 mb-8 brutalist-shadow-lg relative overflow-hidden">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4 relative z-10">
               <span class="font-brutalist text-sm md:text-base font-bold bg-black text-[#FFD93D] px-3 py-1 border-2 border-black uppercase tracking-widest">
                 BANGKOK 2026
               </span>
@@ -272,67 +272,71 @@
                 06 SEPT - 10 SEPT
               </span>
             </div>
-            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-2 uppercase font-sans-custom">
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-2 uppercase font-sans-custom relative z-10">
               Architecture & Cuisine Tour
             </h1>
-            <p class="font-bold text-sm md:text-base text-slate-800">
+            <p class="font-bold text-sm md:text-base text-slate-800 relative z-10">
               曼谷經典與當代建築・美學與精緻餐飲自由行 (Bangkok Self-Guided Trip)
             </p>
           </div>
 
           <!-- 行程卡片清單 (Day Cards List) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            ${tripData.map((day, index) => {
-              const plannedCost = getPlannedCost(day.day);
-              const actualCost = expenses[day.day] || 0;
-              
-              return `
-                <div class="border-4 border-black bg-white overflow-hidden brutalist-shadow brutalist-shadow-hover transition cursor-pointer flex flex-col" onclick="setView(${day.day})">
-                  <!-- 卡片頂部狀態列 -->
-                  <div class="bg-black text-white border-b-4 border-black p-3 font-brutalist font-black flex justify-between items-center">
-                    <span>DAY 0${day.day}</span>
-                    <span class="text-xs border border-black bg-white text-black px-2 py-0.5 rounded-full">${day.date}</span>
-                  </div>
+        `;
 
-                  <!-- 卡片縮圖改為 CSS 圖案 (Graphic Patterns) -->
-                  <div class="relative h-40 ${day.pattern} overflow-hidden border-b-2 border-black flex items-center justify-center">
-                    <div class="bg-white border-4 border-black px-6 py-2 brutalist-shadow transform -rotate-3">
-                      <span class="text-3xl font-black font-brutalist tracking-tighter">D${day.day}</span>
-                    </div>
-                    <div class="absolute bottom-2 left-2 bg-black text-white text-xs font-bold px-2 py-1 border border-white">
-                      ${day.activities.length} 活動 (Activities)
-                    </div>
-                  </div>
+        tripData.forEach(day => {
+          const plannedCost = getPlannedCost(day.day);
+          const actualCost = expenses[day.day] || 0;
+          
+          htmlContent += `
+            <div class="border-4 border-black bg-white overflow-hidden brutalist-shadow brutalist-shadow-hover transition cursor-pointer flex flex-col group" onclick="setView(${day.day})">
+              <!-- 卡片頂部狀態列 -->
+              <div class="bg-black text-white border-b-4 border-black p-3 font-brutalist font-black flex justify-between items-center group-hover:bg-slate-800 transition-colors">
+                <span>DAY 0${day.day}</span>
+                <span class="text-xs border border-black bg-white text-black px-2 py-0.5 rounded-full">${day.date}</span>
+              </div>
 
-                  <div class="p-4 flex-1 flex flex-col justify-between">
-                    <h3 class="text-xl font-extrabold mb-3 line-clamp-1">${day.title}</h3>
-                    
-                    <!-- 預算小卡片 -->
-                    <div class="grid grid-cols-2 gap-2 text-xs font-bold bg-slate-50 p-2 border-2 border-black">
-                      <div>
-                        <div class="text-slate-500 uppercase">預估計劃</div>
-                        <div class="text-slate-800">฿ ${plannedCost.toLocaleString()}</div>
-                      </div>
-                      <div>
-                        <div class="text-slate-500 uppercase">目前已花</div>
-                        <div class="text-emerald-600">฿ ${actualCost.toLocaleString()}</div>
-                      </div>
-                    </div>
+              <!-- 卡片縮圖: CSS 圖案 -->
+              <div class="relative h-40 ${day.pattern} overflow-hidden border-b-2 border-black flex items-center justify-center">
+                <div class="bg-white border-4 border-black px-6 py-2 brutalist-shadow transform -rotate-3 group-hover:rotate-0 transition-transform duration-300">
+                  <span class="text-3xl font-black font-brutalist tracking-tighter">D${day.day}</span>
+                </div>
+                <div class="absolute bottom-2 left-2 bg-black text-white text-xs font-bold px-2 py-1 border border-white">
+                  ${day.activities.length} 活動 (Activities)
+                </div>
+              </div>
+
+              <div class="p-4 flex-1 flex flex-col justify-between">
+                <h3 class="text-xl font-extrabold mb-3 line-clamp-1">${day.title}</h3>
+                
+                <!-- 預算小卡片 -->
+                <div class="grid grid-cols-2 gap-2 text-xs font-bold bg-slate-50 p-2 border-2 border-black">
+                  <div>
+                    <div class="text-slate-500 uppercase">預估計劃</div>
+                    <div class="text-slate-800">฿ ${plannedCost.toLocaleString()}</div>
+                  </div>
+                  <div>
+                    <div class="text-slate-500 uppercase">目前已花</div>
+                    <div class="text-emerald-600">฿ ${actualCost.toLocaleString()}</div>
                   </div>
                 </div>
-              `;
-            }).join('')}
+              </div>
+            </div>
+          `;
+        });
+
+        htmlContent += `
           </div>
 
           <!-- 全行程累積記帳儀表板 (Global Ledger Dashboard) -->
           <div class="border-4 border-black bg-white p-6 brutalist-shadow-lg mb-8">
-            <div class="flex items-center justify-between border-b-4 border-black pb-4 mb-4">
+            <div class="flex flex-wrap items-center justify-between border-b-4 border-black pb-4 mb-4 gap-4">
               <div class="flex items-center gap-2">
                 <i data-lucide="wallet" class="w-6 h-6"></i>
                 <h2 class="text-xl md:text-2xl font-black font-brutalist">TRIP EXPENSE LEDGER</h2>
               </div>
-              <button onclick="openResetModal()" class="border-2 border-black bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-3 py-1 text-xs uppercase font-brutalist transition">
-                重設所有記帳
+              <button onclick="openResetModal()" class="border-2 border-black bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-3 py-1 text-xs uppercase font-brutalist transition flex items-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-0.5">
+                <i data-lucide="trash-2" class="w-4 h-4"></i> 重設所有記帳
               </button>
             </div>
 
@@ -354,22 +358,25 @@
                     <span>฿ ${totalSpent.toLocaleString()}</span>
                   </div>
                   <div class="h-4 w-full bg-slate-200 border-2 border-black mt-2 overflow-hidden">
-                    <div class="h-full bg-emerald-400 border-r-2 border-black" style="width: ${Math.min((totalSpent / (totalPlanned || 1)) * 100, 100)}%"></div>
+                    <div class="h-full bg-emerald-400 border-r-2 border-black transition-all duration-500" style="width: ${Math.min((totalSpent / (totalPlanned || 1)) * 100, 100)}%"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         `;
+        appDiv.innerHTML = htmlContent;
+
       } else {
         const dayData = tripData.find(d => d.day === currentView);
         const dayExpense = expenses[currentView] || 0;
         const plannedExpense = getPlannedCost(currentView);
         const variance = plannedExpense - dayExpense;
         
-        const activitiesHTML = dayData.activities.map((activity, idx) => {
+        let activitiesHTML = '';
+        dayData.activities.forEach((activity, idx) => {
           const style = getCategoryStyle(activity.category);
-          return `
+          activitiesHTML += `
             <div class="flex gap-4 relative">
               <!-- 左側垂直時間線圖形效果 -->
               <div class="flex flex-col items-center">
@@ -380,7 +387,7 @@
               </div>
 
               <!-- 右側活動卡片本體 -->
-              <div class="flex-1 border-4 border-black bg-white p-4 mb-6 brutalist-shadow relative">
+              <div class="flex-1 border-4 border-black bg-white p-4 mb-6 brutalist-shadow relative group">
                 <!-- 時間標籤與活動類別 -->
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                   <span class="font-brutalist font-black text-sm md:text-base text-amber-600 bg-amber-50 px-2 py-0.5 border border-amber-300">
@@ -391,7 +398,6 @@
                   </span>
                 </div>
 
-                <!-- 移除圖片，改用虛線分隔線強化排版 -->
                 <hr class="border-t-2 border-black border-dashed my-3">
 
                 <!-- 活動名稱 -->
@@ -414,7 +420,7 @@
                 </div>
 
                 <!-- 詳細筆記 -->
-                <p class="text-sm text-slate-700 bg-slate-50 border border-slate-200 p-2 leading-relaxed mb-4">
+                <p class="text-sm text-slate-700 bg-slate-50 border border-slate-200 p-3 leading-relaxed mb-4 font-medium">
                   ${activity.notes}
                 </p>
 
@@ -425,7 +431,7 @@
               </div>
             </div>
           `;
-        }).join('');
+        });
 
         appDiv.innerHTML = `
           <!-- 返回首頁按鈕 (頂部) -->
@@ -433,7 +439,7 @@
             <i data-lucide="arrow-left" class="w-5 h-5"></i> 返回主目錄 (BACK TO HOME)
           </button>
 
-          <!-- 每日主資訊看板改為 CSS 圖案 (Graphic Patterns) -->
+          <!-- 每日主資訊看板 -->
           <div class="border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden mb-8">
             <div class="h-48 md:h-64 relative border-b-4 border-black ${dayData.pattern} flex items-center justify-center">
               <div class="bg-black text-white px-8 py-3 border-4 border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transform rotate-2">
@@ -459,53 +465,58 @@
           <!-- 今日專屬記帳本 (Day Expense Tracker) -->
           <div class="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-8">
             <h3 class="font-brutalist text-xl font-bold mb-4 border-b-4 border-black pb-2 flex items-center gap-2">
-              <i data-lucide="dollar-sign" class="w-6 h-6"></i> DAY ${currentView} 記帳本 (Expense Ledger)
+              <i data-lucide="dollar-sign" class="w-6 h-6 bg-green-200 rounded-full"></i> DAY ${currentView} 記帳本 (Expense Ledger)
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- 左：今日支出狀態 -->
-              <div class="bg-slate-50 border-4 border-black p-4 flex flex-col justify-center">
-                <span class="text-xs font-bold text-slate-500 uppercase font-brutalist">當日累計花費 (Spent)</span>
-                <div class="text-3xl font-black text-black mt-1 transition-all" id="displayTotal">฿ ${dayExpense.toLocaleString()}</div>
-                <div class="text-base font-bold text-slate-600 mt-0.5" id="displayTotalHkd">≈ HK$ ${Math.round(dayExpense * EXCHANGE_RATE).toLocaleString()}</div>
+              <div class="bg-slate-50 border-4 border-black p-4 flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-5"><i data-lucide="wallet" class="w-32 h-32"></i></div>
+                <span class="text-xs font-bold text-slate-500 uppercase font-brutalist relative z-10">當日累計花費 (Spent)</span>
+                <div class="text-4xl md:text-5xl font-black text-black mt-1 transition-all relative z-10" id="displayTotal">฿ ${dayExpense.toLocaleString()}</div>
+                <div class="text-base font-bold text-slate-600 mt-1 relative z-10" id="displayTotalHkd">≈ HK$ ${Math.round(dayExpense * EXCHANGE_RATE).toLocaleString()}</div>
                 
-                <div class="mt-4 pt-4 border-t border-slate-200">
+                <div class="mt-6 pt-4 border-t-2 border-slate-300 relative z-10">
                   <div class="flex justify-between text-xs text-slate-500 font-bold">
                     <span>原訂估計花費：</span>
                     <span class="font-brutalist text-slate-800">฿ ${plannedExpense.toLocaleString()}</span>
                   </div>
-                  <div class="flex justify-between text-xs text-slate-500 font-bold mt-1">
+                  <div class="flex justify-between text-xs text-slate-500 font-bold mt-2">
                     <span>預算差額 (Variance)：</span>
-                    <span class="font-brutalist ${variance >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
-                      ${variance >= 0 ? `餘 ฿ ${variance.toLocaleString()}` : `超 ฿ ${Math.abs(variance).toLocaleString()}`}
+                    <span class="font-brutalist text-sm px-2 py-0.5 border border-black ${variance >= 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                      ${variance >= 0 ? `剩餘 ฿ ${variance.toLocaleString()}` : `超支 ฿ ${Math.abs(variance).toLocaleString()}`}
                     </span>
                   </div>
                 </div>
               </div>
 
               <!-- 右：新增與扣除按鈕介面 -->
-              <div>
-                <label class="block text-sm font-bold mb-1 font-brutalist uppercase tracking-wider">輸入金額 (THB):</label>
-                <div class="flex gap-2 mb-3">
-                  <input type="number" id="expenseAmount" placeholder="100" min="1" class="flex-1 border-4 border-black p-2 font-brutalist text-lg focus:outline-none focus:bg-amber-50">
-                  <button onclick="updateExpense(1)" class="border-4 border-black bg-[#6BCB77] text-black font-black px-4 hover:bg-[#5bb767] transition active:translate-y-0.5">新增 (+)</button>
-                  <button onclick="updateExpense(-1)" class="border-4 border-black bg-[#FF6B6B] text-white font-black px-4 hover:bg-[#ec5a5a] transition active:translate-y-0.5">扣除 (-)</button>
+              <div class="flex flex-col justify-center">
+                <label class="block text-sm font-bold mb-2 font-brutalist uppercase tracking-wider">自訂金額輸入 (THB):</label>
+                <div class="flex gap-2 mb-5">
+                  <input type="number" id="expenseAmount" placeholder="Ex: 150" min="1" class="flex-1 border-4 border-black p-3 font-brutalist text-lg focus:outline-none focus:bg-amber-50 focus:ring-2 focus:ring-black">
+                  <button onclick="updateExpense(1)" class="border-4 border-black bg-[#6BCB77] text-black font-black px-4 hover:bg-[#5bb767] transition active:translate-y-1 active:shadow-inner flex flex-col justify-center items-center">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                  </button>
+                  <button onclick="updateExpense(-1)" class="border-4 border-black bg-[#FF6B6B] text-white font-black px-4 hover:bg-[#ec5a5a] transition active:translate-y-1 active:shadow-inner flex flex-col justify-center items-center">
+                    <i data-lucide="minus" class="w-5 h-5"></i>
+                  </button>
                 </div>
 
                 <!-- 記帳快捷面板 -->
-                <span class="block text-xs font-bold text-slate-500 uppercase font-brutalist mb-2">記帳快捷鍵 (Presets)</span>
+                <span class="block text-xs font-bold text-slate-500 uppercase font-brutalist mb-2">快速記帳 (Instant Add Presets)</span>
                 <div class="grid grid-cols-4 gap-2">
-                  <button onclick="quickAdd(50)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+50</button>
-                  <button onclick="quickAdd(100)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+100</button>
-                  <button onclick="quickAdd(500)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+500</button>
-                  <button onclick="quickAdd(1000)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+1K</button>
+                  <button onclick="quickAdd(50)" class="border-2 border-black bg-slate-100 py-3 text-sm font-bold font-brutalist hover:bg-[#FFD93D] transition active:translate-y-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">+50</button>
+                  <button onclick="quickAdd(100)" class="border-2 border-black bg-slate-100 py-3 text-sm font-bold font-brutalist hover:bg-[#FFD93D] transition active:translate-y-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">+100</button>
+                  <button onclick="quickAdd(500)" class="border-2 border-black bg-slate-100 py-3 text-sm font-bold font-brutalist hover:bg-[#FFD93D] transition active:translate-y-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">+500</button>
+                  <button onclick="quickAdd(1000)" class="border-2 border-black bg-slate-100 py-3 text-sm font-bold font-brutalist hover:bg-[#FFD93D] transition active:translate-y-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none">+1K</button>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- 返回首頁按鈕 (底部) -->
-          <div class="mt-8 pt-4 border-t-4 border-black flex justify-center">
+          <div class="mt-8 pt-4 border-t-4 border-black flex justify-center pb-8">
             <button onclick="setView('home')" class="font-brutalist flex items-center gap-2 border-4 border-black bg-white px-6 py-3 font-black hover:bg-slate-100 transition shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none">
               <i data-lucide="arrow-left" class="w-5 h-5"></i> 返回主目錄 (BACK TO HOME)
             </button>
