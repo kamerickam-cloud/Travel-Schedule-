@@ -9,10 +9,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap');
@@ -81,19 +77,13 @@
 </head>
 <body class="p-4 md:p-8 min-h-screen text-slate-900 pb-20">
 
-  <!-- 雲端同步狀態提示 -->
-  <div id="sync-status" class="fixed top-2 left-2 z-50 hidden items-center gap-1 bg-emerald-100 border-2 border-black px-2 py-1 brutalist-shadow text-[10px] font-black font-brutalist text-emerald-800 uppercase tracking-widest">
-    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-    Cloud Synced
-  </div>
-
   <div id="app" class="max-w-4xl mx-auto"></div>
 
   <!-- 確認清除 Modal -->
   <div id="custom-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white border-4 border-black p-6 max-w-sm w-full brutalist-shadow-lg">
       <h3 class="text-xl font-bold font-brutalist mb-2 text-rose-500 uppercase">⚠ 確認清除 (CLEAR)</h3>
-      <p class="text-slate-700 font-bold mb-6">確定要清除所有已記錄的記帳支出嗎？此動作將會同步清除雲端資料庫，無法復原。</p>
+      <p class="text-slate-700 font-bold mb-6">確定要清除所有已記錄的記帳支出嗎？此動作將會清除本地資料庫，無法復原。</p>
       <div class="flex gap-4">
         <button onclick="confirmReset()" class="flex-1 border-4 border-black bg-rose-400 font-black py-2 hover:bg-rose-500 transition active:translate-y-0.5">清除</button>
         <button onclick="closeResetModal()" class="flex-1 border-4 border-black bg-slate-200 font-black py-2 hover:bg-slate-300 transition active:translate-y-0.5">取消</button>
@@ -139,12 +129,12 @@
       {
         day: 3,
         date: "2026-09-08",
-        title: "藝術聚落與老屋活化之夜",
+        title: "老屋活化與藝術街區",
         pattern: "bg-pattern-grid",
         activities: [
           { time: "10:00 - 11:30", location: "曼谷藝術文化中心 (BACC)", category: "Art", estimated_cost_thb: 0, transportation: "BTS 至 National Stadium", notes: "現代環形建築設計，內有獨立藝廊與豐富展覽。" },
-          { time: "11:30 - 12:15", location: "交通往 River City", category: "Logistics", estimated_cost_thb: 100, transportation: "BTS 轉 TukTuk/Grab", notes: "前往昭披耶河畔的藝術中心。" },
-          { time: "12:15 - 15:00", location: "River City Bangkok", category: "Art", estimated_cost_thb: 600, transportation: "步行", notes: "午餐與藝術巡禮：指標性古董與當代藝術商場，可在此享用午餐並欣賞河景。" },
+          { time: "11:30 - 12:00", location: "交通往 River City", category: "Logistics", estimated_cost_thb: 100, transportation: "BTS 轉 TukTuk/Grab", notes: "前往昭披耶河畔的藝術中心。" },
+          { time: "12:00 - 15:00", location: "River City Bangkok", category: "Art", estimated_cost_thb: 600, transportation: "步行", notes: "午餐與藝術巡禮：指標性古董與當代藝術商場，可在此享用午餐並欣賞河景。" },
           { time: "15:00 - 17:00", location: "Warehouse 30", category: "Art", estimated_cost_thb: 350, transportation: "步行", notes: "距離 River City 步行 5 分鐘。二戰舊倉庫改建的重工業風文創聚落，適合下午茶休息。" },
           { time: "17:00 - 17:30", location: "前往唐人街 (Yaowarat)", category: "Logistics", estimated_cost_thb: 100, transportation: "TukTuk 或 Grab", notes: "從 Warehouse 30 呼叫 TukTuk 或 Grab，車程極近，約 10-15 分鐘即可抵達唐人街。" },
           { time: "17:30 - 21:30", location: "唐人街夜市 & 老屋酒吧巷 (Soi Nana)", category: "Entertainment", estimated_cost_thb: 800, transportation: "步行", notes: "晚餐與夜生活：欣賞充滿視覺衝擊的霓虹燈街景與米其林街頭小吃。餐後步行至旁邊的 Soi Nana (文青巷弄)，這裡聚集由百年中式老屋活化改建的精品酒吧 (如 Ba Hao)，完美延續今日的老屋藝術美學。" }
@@ -153,15 +143,15 @@
       {
         day: 4,
         date: "2026-09-09",
-        title: "前衛零售建築與高空景觀",
+        title: "素坤逸潮流聚落與垂直建築",
         pattern: "bg-pattern-check",
         activities: [
-          { time: "10:30 - 13:00", location: "EmSphere", category: "Architecture", estimated_cost_thb: 450, transportation: "BTS 至 Phrom Phong", notes: "曼谷最新工業風前衛商場。龐大的鋼骨結構與充滿霓虹燈飾的室內街頭美食區，展現極致的現代粗獷主義。" },
-          { time: "13:00 - 13:30", location: "前往 Siam 區", category: "Logistics", estimated_cost_thb: 40, transportation: "BTS 至 Siam", notes: "搭乘 BTS 直接返回市中心 Siam 站，動線極為順暢。" },
-          { time: "13:30 - 16:00", location: "Siam Center", category: "Shopping", estimated_cost_thb: 500, transportation: "步行", notes: "考察「暗黑工業風」室內設計與大量多媒體互動裝置。這裡主打泰國本土設計師品牌與潮流文創小店，絕不能錯過 1F 的 Absolute Siam Store。" },
-          { time: "16:00 - 17:30", location: "Siam Discovery", category: "Architecture", estimated_cost_thb: 200, transportation: "室內空橋步行", notes: "由 Nendo (佐藤大) 操刀設計的實驗室美學商場，幾何框架與商品陳列極具巧思。與 Siam Center 室內直接連通。" },
-          { time: "17:30 - 19:30", location: "KungThong Seafood (Siam Discovery 3F)", category: "Food", estimated_cost_thb: 1500, transportation: "步行", notes: "晚餐：就在 Siam Discovery 3樓，不用離開商場。主打泰南風味海鮮，推薦必點乾煎大河蝦。" },
-          { time: "20:00 - 22:00", location: "Red Sky Bar Bangkok", category: "Entertainment", estimated_cost_thb: 900, transportation: "步行轉電梯", notes: "55樓高空觀景 (Rooftop Bar)。從 Siam 走回酒店 (Centara Grand) 即可直達頂樓，完美避開夜間塞車。" }
+          { time: "10:30 - 13:30", location: "EmSphere", category: "Architecture", estimated_cost_thb: 500, transportation: "BTS 至 Phrom Phong", notes: "曼谷最新工業風前衛商場。龐大的鋼骨結構與充滿霓虹燈飾的室內街頭美食區，展現極致的現代粗獷主義。" },
+          { time: "13:30 - 14:00", location: "前往 Thong Lo (通羅)", category: "Logistics", estimated_cost_thb: 60, transportation: "BTS 轉 TukTuk", notes: "搭乘 BTS 往東一站到 Thong Lo，然後轉乘 TukTuk 或步行進入通羅巷弄（設計師與富人區）。" },
+          { time: "14:00 - 16:00", location: "The Commons Thong Lo", category: "Architecture", estimated_cost_thb: 300, transportation: "步行", notes: "極具指標性的清水模 (Brutalism) 露天階梯式社區商場。通風設計極佳，充滿精品咖啡、精釀啤酒與文創小店，完美的午後休息站。" },
+          { time: "16:00 - 17:30", location: "Marché Thonglor", category: "Architecture", estimated_cost_thb: 200, transportation: "步行", notes: "從 The Commons 步行 5 分鐘。全新開幕的垂直綠洲地標，以流線型的純白空橋與標誌性的黃色旋轉樓梯聞名，視覺張力極強。" },
+          { time: "17:30 - 19:30", location: "Supanniga Eating Room (Thong Lo)", category: "Food", estimated_cost_thb: 1200, transportation: "步行", notes: "晚餐：米其林推薦的精緻泰菜。隱身在通羅區的絕美設計餐廳，提供高質感的傳統泰式家常料理。" },
+          { time: "19:45 - 22:00", location: "Tichuca Rooftop Bar", category: "Entertainment", estimated_cost_thb: 900, transportation: "Grab 或 TukTuk", notes: "位於 T-One 大樓頂樓 (46F)。曼谷最火紅的叢林風高空酒吧，擁有巨大的 LED 發光水母樹裝置藝術，設計感與視覺震撼度滿分！結束後可直接在樓下搭 BTS 回飯店。" }
         ]
       },
       {
@@ -184,57 +174,6 @@
     let currentView = 'home';
     let expenses = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
     const EXCHANGE_RATE = 0.22;
-
-    // 🔥 Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAr15MvPpnTTzJ6uE1g7Cgp3adKaoE7Woc",
-      authDomain: "travel-schedule-ca7cc.firebaseapp.com",
-      projectId: "travel-schedule-ca7cc",
-      storageBucket: "travel-schedule-ca7cc.firebasestorage.app",
-      messagingSenderId: "553600457945",
-      appId: "1:553600457945:web:4c403aff9f622cbe3972c8"
-    };
-
-    let db;
-    let docRef;
-
-    // Initialize Firebase
-    try {
-      firebase.initializeApp(firebaseConfig);
-      db = firebase.firestore();
-      
-      // Anonymous Auth for read/write rules
-      firebase.auth().signInAnonymously()
-        .then(() => {
-          console.log("Firebase Auth Success");
-          document.getElementById('sync-status').classList.remove('hidden');
-          document.getElementById('sync-status').classList.add('flex');
-          initFirestoreSync();
-        })
-        .catch((error) => console.error("Auth error:", error));
-    } catch (e) {
-      console.error("Firebase init failed:", e);
-      loadLocalData();
-    }
-
-    function initFirestoreSync() {
-      docRef = db.collection('trips').doc('bkk_2026_shared');
-      
-      // Real-time listener
-      docRef.onSnapshot((doc) => {
-        if (doc.exists) {
-          expenses = doc.data().expenses || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-        } else {
-          // Initialize if empty
-          docRef.set({ expenses: expenses });
-        }
-        localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
-        render();
-      }, (error) => {
-        console.error("Sync error:", error);
-        loadLocalData();
-      });
-    }
 
     function loadLocalData() {
       expenses = JSON.parse(localStorage.getItem('bkk_expenses')) || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
@@ -267,9 +206,6 @@
       if (expenses[currentView] < 0) expenses[currentView] = 0;
       
       localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
-      if (docRef) {
-        docRef.update({ expenses: expenses }).catch(e => console.error("Cloud update failed", e));
-      }
       render();
     }
 
@@ -286,9 +222,6 @@
     window.confirmReset = function() {
       expenses = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
       localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
-      if (docRef) {
-        docRef.set({ expenses: expenses });
-      }
       closeResetModal();
       render();
     };
@@ -341,7 +274,7 @@
               Architecture & Cuisine Tour
             </h1>
             <p class="font-bold text-sm md:text-base text-slate-800">
-              曼谷經典與當代建築・美學與精緻餐飲自由行 (Multiplayer)
+              曼谷經典與當代建築・美學與精緻餐飲自由行 (Local Mode)
             </p>
           </div>
 
@@ -389,7 +322,7 @@
                 <h2 class="text-xl md:text-2xl font-black font-brutalist tracking-tight">TRIP LEDGER</h2>
               </div>
               <button onclick="openResetModal()" class="border-2 border-black bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-3 py-1 text-[10px] sm:text-xs uppercase font-brutalist transition">
-                清除雲端記帳
+                清除本地記帳
               </button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -497,11 +430,11 @@
 
           <div class="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-8">
             <h3 class="font-brutalist text-xl font-bold mb-4 border-b-4 border-black pb-2 flex items-center gap-2">
-              <i data-lucide="dollar-sign" class="w-6 h-6"></i> DAY ${currentView} 雲端記帳本
+              <i data-lucide="dollar-sign" class="w-6 h-6"></i> DAY ${currentView} 本地記帳本
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="bg-slate-50 border-4 border-black p-4 flex flex-col justify-center">
-                <span class="text-xs font-bold text-slate-500 uppercase font-brutalist">當日累計花費 (Shared Total)</span>
+                <span class="text-xs font-bold text-slate-500 uppercase font-brutalist">當日累計花費 (Total)</span>
                 <div class="text-3xl font-black text-black mt-1 transition-all">฿ ${dayExpense.toLocaleString()}</div>
                 <div class="text-base font-bold text-slate-600 mt-0.5">≈ HK$ ${Math.round(dayExpense * EXCHANGE_RATE).toLocaleString()}</div>
                 <div class="mt-4 pt-4 border-t border-slate-200">
