@@ -3,476 +3,379 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>曼谷自由行 - Architecture & Cuisine Tour</title>
-  
-  <!-- Tailwind CSS CDN -->
+  <title>TASMANIA · 10 Days Expedition</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap');
-    
-    .font-brutalist { font-family: 'Space Mono', monospace; }
-    .font-sans-custom { font-family: 'Plus Jakarta Sans', sans-serif; }
-    
-    body {
-      background-color: #F4F3EF; 
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .brutalist-shadow {
-      box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
-    }
-    .brutalist-shadow-lg {
-      box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
-    }
-    .brutalist-shadow-hover:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
-    }
-    .brutalist-shadow-hover:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
-    }
-
-    /* CSS Patterns */
-    .bg-pattern-dots {
-      background-color: #FF9BE6;
-      background-image: radial-gradient(#FF005C 4px, transparent 4px), radial-gradient(#FF005C 4px, transparent 4px);
-      background-size: 32px 32px;
-      background-position: 0 0, 16px 16px;
-    }
-    .bg-pattern-lines {
-      background-color: #4D96FF;
-      background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.8) 10px, rgba(255, 255, 255, 0.8) 20px);
-    }
-    .bg-pattern-grid {
-      background-color: #6BCB77;
-      background-image: 
-        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), 
-        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000);
-      background-position: 0 0, 16px 16px;
-      background-size: 32px 32px;
-    }
-    .bg-pattern-check {
-      background-color: #FFD93D;
-      background-image: 
-        linear-gradient(135deg, #FF7B00 25%, transparent 25%),
-        linear-gradient(225deg, #FF7B00 25%, transparent 25%),
-        linear-gradient(45deg, #FF7B00 25%, transparent 25%),
-        linear-gradient(315deg, #FF7B00 25%, transparent 25%);
-      background-position:  16px 0, 16px 0, 0 0, 0 0;
-      background-size: 32px 32px;
-      background-repeat: repeat;
-    }
-    .bg-pattern-blocks {
-      background-color: #00E5FF;
-      background-image: 
-        linear-gradient(45deg, #005CFF 25%, transparent 25%, transparent 75%, #005CFF 75%, #005CFF),
-        linear-gradient(-45deg, #005CFF 25%, transparent 25%, transparent 75%, #005CFF 75%, #005CFF);
-      background-size: 20px 20px;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap');
+    * { box-sizing: border-box; }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: #0c0c0c; color: #f5f5f0; min-height: 100vh; margin: 0; }
+    .font-serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .hero-full { position: relative; height: 70vh; min-height: 420px; overflow: hidden; }
+    .hero-full img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) contrast(1.05); }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, #0c0c0c 0%, transparent 45%, rgba(0,0,0,0.3) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px 20px 32px; }
+    .day-photo { position: relative; height: 200px; overflow: hidden; border-radius: 4px 4px 0 0; }
+    .day-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .day-card:hover .day-photo img { transform: scale(1.06); }
+    .day-photo-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,12,12,0.9) 0%, transparent 55%); display: flex; align-items: flex-end; padding: 16px; }
+    .day-card { background: #161616; border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; transition: border-color 0.2s, transform 0.2s; cursor: pointer; }
+    .day-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-3px); }
+    .tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+    .tag-accent { background: #c45c26; border-color: #c45c26; color: #fff; }
+    .timeline-rail { width: 1px; background: linear-gradient(to bottom, #c45c26, rgba(255,255,255,0.1)); flex-shrink: 0; }
+    .node { width: 10px; height: 10px; border-radius: 50%; background: #c45c26; border: 2px solid #0c0c0c; box-shadow: 0 0 0 2px #c45c26; flex-shrink: 0; margin-top: 6px; }
+    .act-card { background: #161616; border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; padding: 16px; }
+    .btn-primary { background: #c45c26; color: #fff; font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 18px; border: none; border-radius: 2px; cursor: pointer; }
+    .btn-primary:hover { background: #d46a30; }
+    .btn-outline { background: transparent; color: rgba(255,255,255,0.7); font-weight: 600; font-size: 12px; padding: 9px 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 2px; cursor: pointer; }
+    .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(12,12,12,0.92); backdrop-filter: blur(16px); border-top: 1px solid rgba(255,255,255,0.08); padding: 12px 16px 20px; z-index: 50; }
+    .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; text-transform: uppercase; }
+    .nav-btn.active { color: #c45c26; }
+    .stat-block { background: #161616; border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; padding: 16px; }
+    .progress-bar { height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+    .progress-bar > div { height: 100%; background: #c45c26; transition: width 0.4s; }
+    input[type=number] { background: #0c0c0c; border: 1px solid rgba(255,255,255,0.15); color: #f5f5f0; border-radius: 2px; padding: 12px; font-size: 16px; font-weight: 600; width: 100%; }
+    input[type=number]:focus { outline: none; border-color: #c45c26; }
   </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen text-slate-900 pb-20">
-
-  <div id="app" class="max-w-4xl mx-auto"></div>
-
-  <!-- 確認清除 Modal -->
-  <div id="custom-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white border-4 border-black p-6 max-w-sm w-full brutalist-shadow-lg">
-      <h3 class="text-xl font-bold font-brutalist mb-2 text-rose-500 uppercase">⚠ 確認清除 (CLEAR)</h3>
-      <p class="text-slate-700 font-bold mb-6">確定要清除所有已記錄的記帳支出嗎？此動作將會清除本地資料庫，無法復原。</p>
-      <div class="flex gap-4">
-        <button onclick="confirmReset()" class="flex-1 border-4 border-black bg-rose-400 font-black py-2 hover:bg-rose-500 transition active:translate-y-0.5">清除</button>
-        <button onclick="closeResetModal()" class="flex-1 border-4 border-black bg-slate-200 font-black py-2 hover:bg-slate-300 transition active:translate-y-0.5">取消</button>
+<body class="pb-24">
+  <div id="app" class="max-w-lg mx-auto"></div>
+  <div id="modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-5">
+    <div class="bg-[#161616] border border-white/10 p-6 max-w-sm w-full rounded-sm">
+      <h3 class="text-lg font-bold text-[#c45c26] mb-2">清除所有記帳？</h3>
+      <p class="text-sm text-white/50 mb-5">此動作無法復原。</p>
+      <div class="flex gap-3">
+        <button onclick="confirmReset()" class="btn-primary flex-1">確認清除</button>
+        <button onclick="closeModal()" class="btn-outline flex-1">取消</button>
       </div>
     </div>
   </div>
-
   <script>
+    const photos = {
+      hero: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=80",
+      d1: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
+      d2: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80",
+      d3: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+      d4: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=800&q=80",
+      d5: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80",
+      d6: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      d7: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80",
+      d8: "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800&q=80",
+      d9: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+      d10: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80"
+    };
+    const fb = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500'%3E%3Crect fill='%231a2a2a' width='800' height='500'/%3E%3Ctext x='50%25' y='50%25' fill='%23555' font-size='28' text-anchor='middle' dy='.3em' font-family='sans-serif'%3ETASMANIA%3C/text%3E%3C/svg%3E";
+
     const tripData = [
-      {
-        day: 1,
-        date: "2026-09-06",
-        title: "啟程與經典商圈之夜",
-        pattern: "bg-pattern-dots",
-        activities: [
-          { time: "06:00 - 07:30", location: "香港國際機場 (HKG)", category: "Airport", estimated_cost_thb: null, transportation: "自理", notes: "辦理登機手續及安檢 (Check-in & Security)。" },
-          { time: "08:00 - 11:30", location: "聯合航空航班 & 機場入境", category: "Flight", estimated_cost_thb: null, transportation: "飛機 (Flight)", notes: "包含 2h45m 飛行時間及降落後辦理入境 (Immigration) 與提取行李。09:45 降落為曼谷當地時間。" },
-          { time: "11:30 - 12:15", location: "搭乘機場快線 (ARL)", category: "Logistics", estimated_cost_thb: 45, transportation: "機場快線 (ARL)", notes: "前往機場 B 層 (Basement) 購票，搭乘 ARL 至終點站 Phaya Thai 站。" },
-          { time: "12:15 - 13:00", location: "Centara Grand at Central World", category: "Logistics", estimated_cost_thb: 30, transportation: "BTS 轉 Skywalk", notes: "於 Phaya Thai 站轉乘 BTS 至 Chit Lom 站，出站後經高架行人天橋 (Skywalk) 直達酒店辦理 Check-in。" },
-          { time: "13:00 - 14:00", location: "Nara Thai Cuisine (CentralWorld)", category: "Food", estimated_cost_thb: 650, transportation: "步行", notes: "午餐：CentralWorld 內部，環境整潔，經典泰菜。" },
-          { time: "14:45 - 17:30", location: "恰圖恰週末市集 (Chatuchak)", category: "Shopping", estimated_cost_thb: 500, transportation: "BTS 至 Mo Chit", notes: "集中於第 2-4 區 (Section 2-4) 設計師品牌區域。" },
-          { time: "18:00 - 20:00", location: "Siam Paragon (暹羅百麗宮)", category: "Food", estimated_cost_thb: 600, transportation: "BTS 至 Siam", notes: "晚餐：曼谷最具代表性的經典奢華商場。建議於 G 樓室內水景美食區或各大精緻餐廳享用晚餐，享受舒適的冷氣空間。" },
-          { time: "20:00 - 21:30", location: "Siam Square (暹羅廣場步行街)", category: "Entertainment", estimated_cost_thb: 300, transportation: "步行", notes: "晚餐後至正對面的 Siam Square 散步。感受曼谷的年輕活力、街頭藝人表演與豐富的文創小店。" },
-          { time: "21:30 - 21:45", location: "Centara Grand at Central World", category: "Logistics", estimated_cost_thb: 0, transportation: "Skywalk 步行", notes: "經高架空橋 (Skywalk) 穿過 CentralWorld 直接步行返回酒店休息。" }
-        ]
-      },
-      {
-        day: 2,
-        date: "2026-09-07",
-        title: "老城皇族與河畔新地標",
-        pattern: "bg-pattern-lines",
-        activities: [
-          { time: "09:00 - 09:45", location: "交通往大皇宮", category: "Logistics", estimated_cost_thb: 150, transportation: "Grab 或 MRT", notes: "搭乘 Grab 計程車，或搭地鐵 (MRT) 至 Sanam Chai 站，直達大皇宮區域。" },
-          { time: "09:45 - 12:00", location: "曼谷大皇宮", category: "Architecture", estimated_cost_thb: 500, transportation: "步行", notes: "傳統建築群，需遵守嚴格服裝規範 (長褲/長裙/包鞋)。" },
-          { time: "12:00 - 14:00", location: "J's Restaurant Thatien", category: "Food", estimated_cost_thb: 500, transportation: "步行", notes: "午餐：主打在地泰式家常料理與美味海鮮，性價比極高。" },
-          { time: "14:00 - 15:30", location: "黎明寺 (Wat Arun)", category: "Architecture", estimated_cost_thb: 105, transportation: "過河渡船", notes: "白色高塔與瓷器鑲嵌建築風格。" },
-          { time: "15:30 - 16:15", location: "乘船至 ICONSIAM", category: "Logistics", estimated_cost_thb: 30, transportation: "河岸觀光船", notes: "從黎明寺搭乘沿河觀光船往南直達 ICONSIAM 專屬碼頭，沿途欣賞昭披耶河風光。" },
-          { time: "16:15 - 18:30", location: "ICONSIAM (暹羅天地)", category: "Architecture", estimated_cost_thb: 300, transportation: "步行", notes: "下午行程：曼谷河岸最壯觀的超級商場。考察其極具奢華感的建築設計與多層次的空間運用。" },
-          { time: "18:30 - 20:30", location: "SookSiam (ICONSIAM GF)", category: "Food", estimated_cost_thb: 500, transportation: "步行", notes: "晚餐：位於 ICONSIAM Ｇ樓的室內水上市場。完美復刻泰國傳統村落風情，提供大量道地小吃且環境乾淨涼爽。" },
-          { time: "20:30 - 21:15", location: "交通返回酒店", category: "Logistics", estimated_cost_thb: 60, transportation: "金線轉 BTS", notes: "搭乘無人駕駛的 BTS 金線轉乘回 Chit Lom 站，經 Skywalk 步行返回酒店。" }
-        ]
-      },
-      {
-        day: 3,
-        date: "2026-09-08",
-        title: "老屋活化與藝術街區",
-        pattern: "bg-pattern-grid",
-        activities: [
-          { time: "10:00 - 11:30", location: "曼谷藝術文化中心 (BACC)", category: "Art", estimated_cost_thb: 0, transportation: "BTS 至 National Stadium", notes: "現代環形建築設計，內有獨立藝廊與豐富展覽。" },
-          { time: "11:30 - 12:00", location: "交通往 River City", category: "Logistics", estimated_cost_thb: 100, transportation: "BTS 轉 TukTuk/Grab", notes: "前往昭披耶河畔的藝術中心。" },
-          { time: "12:00 - 15:00", location: "River City Bangkok", category: "Art", estimated_cost_thb: 600, transportation: "步行", notes: "午餐與藝術巡禮：指標性古董與當代藝術商場，可在此享用午餐並欣賞河景。" },
-          { time: "15:00 - 17:00", location: "Warehouse 30", category: "Art", estimated_cost_thb: 350, transportation: "步行", notes: "距離 River City 步行 5 分鐘。二戰舊倉庫改建的重工業風文創聚落，適合下午茶休息。" },
-          { time: "17:00 - 17:30", location: "前往唐人街 (Yaowarat)", category: "Logistics", estimated_cost_thb: 100, transportation: "TukTuk 或 Grab", notes: "從 Warehouse 30 呼叫 TukTuk 或 Grab，車程極近，約 10-15 分鐘即可抵達唐人街。" },
-          { time: "17:30 - 21:30", location: "唐人街夜市 & 老屋酒吧巷 (Soi Nana)", category: "Entertainment", estimated_cost_thb: 800, transportation: "步行", notes: "晚餐與夜生活：欣賞充滿視覺衝擊的霓虹燈街景與米其林街頭小吃。餐後步行至旁邊的 Soi Nana (文青巷弄)，這裡聚集由百年中式老屋活化改建的精品酒吧 (如 Ba Hao)，完美延續今日的老屋藝術美學。" }
-        ]
-      },
-      {
-        day: 4,
-        date: "2026-09-09",
-        title: "素坤逸潮流聚落與垂直建築",
-        pattern: "bg-pattern-check",
-        activities: [
-          { time: "10:30 - 13:30", location: "EmSphere", category: "Architecture", estimated_cost_thb: 500, transportation: "BTS 至 Phrom Phong", notes: "曼谷最新工業風前衛商場。龐大的鋼骨結構與充滿霓虹燈飾的室內街頭美食區，展現極致的現代粗獷主義。" },
-          { time: "13:30 - 14:00", location: "前往 Thong Lo (通羅)", category: "Logistics", estimated_cost_thb: 60, transportation: "BTS 轉 TukTuk", notes: "搭乘 BTS 往東一站到 Thong Lo，然後轉乘 TukTuk 或步行進入通羅巷弄（設計師與富人區）。" },
-          { time: "14:00 - 16:00", location: "The Commons Thong Lo", category: "Architecture", estimated_cost_thb: 300, transportation: "步行", notes: "極具指標性的清水模 (Brutalism) 露天階梯式社區商場。通風設計極佳，充滿精品咖啡、精釀啤酒與文創小店，完美的午後休息站。" },
-          { time: "16:00 - 17:30", location: "Marché Thonglor", category: "Architecture", estimated_cost_thb: 200, transportation: "步行", notes: "從 The Commons 步行 5 分鐘。全新開幕的垂直綠洲地標，以流線型的純白空橋與標誌性的黃色旋轉樓梯聞名，視覺張力極強。" },
-          { time: "17:30 - 19:30", location: "Supanniga Eating Room (Thong Lo)", category: "Food", estimated_cost_thb: 1200, transportation: "步行", notes: "晚餐：米其林推薦的精緻泰菜。隱身在通羅區的絕美設計餐廳，提供高質感的傳統泰式家常料理。" },
-          { time: "19:45 - 22:00", location: "Tichuca Rooftop Bar", category: "Entertainment", estimated_cost_thb: 900, transportation: "Grab 或 TukTuk", notes: "位於 T-One 大樓頂樓 (46F)。曼谷最火紅的叢林風高空酒吧，擁有巨大的 LED 發光水母樹裝置藝術，設計感與視覺震撼度滿分！結束後可直接在樓下搭 BTS 回飯店。" }
-        ]
-      },
-      {
-        day: 5,
-        date: "2026-09-10",
-        title: "輕鬆伴手禮與回程",
-        pattern: "bg-pattern-blocks",
-        activities: [
-          { time: "09:30 - 10:00", location: "酒店 Check-out", category: "Logistics", estimated_cost_thb: 0, transportation: "電梯", notes: "早上先辦理退房手續，並將行李寄放於酒店大廳，以便輕鬆進行接下來的行程。" },
-          { time: "10:00 - 11:30", location: "Gourmet Market CentralWorld", category: "Shopping", estimated_cost_thb: 1000, transportation: "步行", notes: "酒店共構商場內的精品超市，環境極佳，適合最後採購泰國零食與伴手禮。" },
-          { time: "11:30 - 13:00", location: "Thong Smith CentralWorld", category: "Food", estimated_cost_thb: 400, transportation: "步行", notes: "午餐：船麵大王。傳統船麵精品化，衛生標準高，為旅程畫下完美句點。" },
-          { time: "13:00 - 14:30", location: "曼谷蘇凡納布機場 (BKK)", category: "Logistics", estimated_cost_thb: 75, transportation: "BTS 轉 ARL", notes: "回酒店大廳拿行李出發前往機場。" },
-          { time: "14:30 - 16:30", location: "曼谷蘇凡納布機場 (BKK)", category: "Airport", estimated_cost_thb: null, transportation: "步行", notes: "辦理退稅 (VAT Refund)、登機手續及安檢。(提早抵達以應付排隊人潮)" },
-          { time: "17:30 - 21:15", location: "香港國際機場 (HKG)", category: "Flight", estimated_cost_thb: null, transportation: "飛機", notes: "聯合航空航班 (BKK -> HKG)。21:15 為香港當地時間。" }
-        ]
-      }
+      { day:1, date:"25 NOV", title:"啟程飛往 Hobart", subtitle:"00:30 起飛 · 17:10 抵達", hotel:"Sixty Six Boutique Apartments", photo:photos.d1,
+        acts:[
+          {t:"00:30", loc:"出發機場", cat:"Flight", cost:null, note:"起飛前往 Hobart（塔斯曼尼亞）"},
+          {t:"17:10", loc:"Hobart Airport (HBA)", cat:"Airport", cost:null, note:"抵達 Hobart · 提取行李 · 前往市區"},
+          {t:"傍晚", loc:"Sixty Six Boutique Apartments", cat:"Hotel", cost:0, note:"辦理入住（66 Burnett St, North Hobart）· 休息調整時差"}
+        ]},
+      { day:2, date:"26 NOV", title:"會議報到與碼頭", subtitle:"報到 · Victoria Dock", hotel:"Sixty Six Boutique Apartments", photo:photos.d2,
+        acts:[
+          {t:"白天", loc:"會議報到", cat:"Conference", cost:null, note:"圍手術期醫學國際研討會議報到與交流"},
+          {t:"傍晚–晚上", loc:"Victoria Dock", cat:"Food", cost:40, note:"港灣散步 · 休閒海鮮晚餐"}
+        ]},
+      { day:3, date:"27 NOV", title:"全日會議與日落", subtitle:"威靈頓山 · Trophy Room", hotel:"Sixty Six Boutique Apartments", photo:photos.d3,
+        acts:[
+          {t:"08:30–16:30", loc:"Perioperative Medicine Conference", cat:"Conference", cost:null, note:"全日研討會議"},
+          {t:"16:30 後", loc:"kunanyi / Mount Wellington", cat:"Nature", cost:20, note:"山頂日落觀景 · 需防風外套"},
+          {t:"20:15", loc:"Trophy Room", cat:"Food", cost:80, note:"精緻晚餐"}
+        ]},
+      { day:4, date:"28 NOV", title:"會議結業", subtitle:"Salamanca · 晚餐二選一", hotel:"Sixty Six Boutique Apartments", photo:photos.d4,
+        acts:[
+          {t:"08:30–17:00", loc:"研討會議最後一日", cat:"Conference", cost:null, note:"會議圓滿閉幕"},
+          {t:"17:30 後", loc:"Salamanca Place", cat:"Food", cost:50, note:"Devils Kitchen Cafe 或 Da Angelo Ristorante · 整理翌日退房行李"}
+        ]},
+      { day:5, date:"29 NOV", title:"MONA 與東岸", subtitle:"市集 · 酒莊 · Freycinet", hotel:"BIG4 Iluka on Freycinet", photo:photos.d5,
+        acts:[
+          {t:"08:30", loc:"Farm Gate Market", cat:"Food", cost:25, note:"星期日市集早餐"},
+          {t:"10:15", loc:"取車", cat:"Drive", cost:null, note:"退房並提取自駕車"},
+          {t:"11:00", loc:"MONA (Museum of Old and New Art)", cat:"Art", cost:35, note:"地下展廳 · 館內午餐"},
+          {t:"14:00", loc:"Devil's Corner Cellar Door", cat:"Wine", cost:40, note:"黑皮諾 · 生蠔 · 途中可超市採買自煮食材"},
+          {t:"17:45", loc:"BIG4 Iluka on Freycinet", cat:"Hotel", cost:0, note:"入住 Coles Bay"}
+        ]},
+      { day:6, date:"30 NOV", title:"酒杯灣與火焰灣", subtitle:"健行 · 龍蝦 · 橙石沙灘", hotel:"Bay of Fires Holiday Suites", photo:photos.d6,
+        acts:[
+          {t:"08:00", loc:"Wineglass Bay Lookout", cat:"Nature", cost:0, note:"1.5–2.5h 健行 · 可續行至沙灘"},
+          {t:"11:45", loc:"The Lobster Shack (Bicheno)", cat:"Food", cost:60, note:"海景龍蝦午餐"},
+          {t:"13:00", loc:"Bicheno Blowhole", cat:"Nature", cost:0, note:"海蝕噴水洞"},
+          {t:"14:45", loc:"Bay of Fires / Binalong Bay", cat:"Nature", cost:0, note:"橙紅花崗岩 · 白沙灘"},
+          {t:"17:30", loc:"St Helens", cat:"Hotel", cost:30, note:"先 IGA 購物再入住 Bay of Fires Holiday Suites"}
+        ]},
+      { day:7, date:"1 DEC", title:"Tamar 與峽谷", subtitle:"博物館 · 酒莊 · Cataract Gorge", hotel:"Launceston 市區", photo:photos.d7,
+        acts:[
+          {t:"09:00", loc:"前往 Launceston", cat:"Drive", cost:0, note:"約 2h15m"},
+          {t:"10:30", loc:"Queen Victoria Museum at Inveresk", cat:"Art", cost:0, note:"免費 · 塔州歷史與自然"},
+          {t:"12:15", loc:"Tamar Ridge Cellar Door", cat:"Wine", cost:50, note:"河谷全景 · 露台午餐"},
+          {t:"14:30", loc:"Cataract Gorge Reserve", cat:"Nature", cost:20, note:"吊橋 · 索道 · 孔雀"},
+          {t:"17:30", loc:"Launceston 市區", cat:"Hotel", cost:45, note:"歷史街區晚餐（Change Overnight）"}
+        ]},
+      { day:8, date:"2 DEC", title:"搖籃山", subtitle:"威士忌 · 芝士 · Dove Lake", hotel:"Discovery Resorts – Cradle Mountain", photo:photos.d8,
+        acts:[
+          {t:"09:00", loc:"Western Tiers Distillery", cat:"Wine", cost:25, note:"單一麥芽 · 駕駛者淺嚐"},
+          {t:"10:20", loc:"Ashgrove Cheese", cat:"Food", cost:20, note:"本地乳酪試食"},
+          {t:"11:30", loc:"Sheffield 壁畫小鎮", cat:"Art", cost:10, note:"壁畫 + IGA Everyday 購物"},
+          {t:"13:00", loc:"Dove Lake / Cradle Mountain", cat:"Nature", cost:0, note:"環湖步道 · 可挑戰 Marion's Lookout · 袋熊"},
+          {t:"18:45", loc:"Discovery Resorts – Cradle Mountain", cat:"Hotel", cost:0, note:"入住暖胃晚餐"}
+        ]},
+      { day:9, date:"3 DEC", title:"A5 高原公路", subtitle:"雨林 · 大湖 · 短停 · 回機場", hotel:"Mantra Hobart Airport", photo:photos.d9,
+        acts:[
+          {t:"08:30–09:30", loc:"Enchanted Walk", cat:"Nature", cost:0, note:"清晨雨林步道 · 溪流與苔蘚 · 輕鬆平緩"},
+          {t:"10:00–10:30", loc:"Deloraine（加油）", cat:"Drive", cost:0, note:"高原前務必加滿油 · 建議保留收據"},
+          {t:"11:30–12:00", loc:"Miena Dam Lookout", cat:"Nature", cost:0, note:"大湖壩觀景 · 短暫停車休息"},
+          {t:"12:00–13:00", loc:"Great Lake Hotel / Miena", cat:"Food", cost:25, note:"海拔約 1000m 木屋午餐"},
+          {t:"13:30–13:50", loc:"The Steppes Historic Site", cat:"Art", cost:0, note:"環狀青銅雕塑群 · 短停拍照"},
+          {t:"14:30–14:50", loc:"Bothwell", cat:"Drive", cost:0, note:"歷史砂岩小鎮 · 短暫休息再上路"},
+          {t:"16:45", loc:"Mantra Hobart Airport", cat:"Hotel", cost:0, note:"入住 · 至 BP Cambridge 加滿油並保留收據（方便翌日還車）"}
+        ]},
+      { day:10, date:"4 DEC", title:"返港", subtitle:"還車 · 起飛", hotel:"—", photo:photos.d10,
+        acts:[
+          {t:"07:30", loc:"退房還車", cat:"Drive", cost:0, note:"拍照記錄滿油與車況"},
+          {t:"08:20", loc:"Hobart Airport (HBA)", cat:"Airport", cost:null, note:"托運安檢"},
+          {t:"10:00", loc:"航班起飛", cat:"Flight", cost:null, note:"圓滿結束旅程"}
+        ]}
     ];
 
-    // State
-    let currentView = 'home';
-    let expenses = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-    const EXCHANGE_RATE = 0.22;
+    let view = 'home';
+    let expenses = {};
+    let canStore = false;
+    const RATE = 5.2;
 
-    function loadLocalData() {
-      expenses = JSON.parse(localStorage.getItem('bkk_expenses')) || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-      render();
+    function checkStore() { try { localStorage.setItem('_','1'); localStorage.removeItem('_'); canStore = true; } catch(e) { canStore = false; } }
+    function loadExp() {
+      checkStore();
+      if (canStore) { try { const s = localStorage.getItem('tas_exp_v2'); if (s) { expenses = JSON.parse(s); return; } } catch(e){} }
+      tripData.forEach(d => expenses[d.day] = 0);
     }
+    function saveExp() { if (canStore) try { localStorage.setItem('tas_exp_v2', JSON.stringify(expenses)); } catch(e){} }
+    const planned = n => { const d = tripData.find(x=>x.day===n); return d ? d.acts.reduce((s,a)=>s+(a.cost||0),0) : 0; };
 
-    const getPlannedCost = (dayNum) => {
-      const day = tripData.find(d => d.day === dayNum);
-      if (!day) return 0;
-      return day.activities.reduce((sum, act) => sum + (act.estimated_cost_thb || 0), 0);
+    window.addExp = function(m) {
+      const el = document.getElementById('amt');
+      const v = parseInt(el && el.value);
+      if (!isNaN(v) && v>0 && typeof view==='number') { expenses[view]=Math.max(0,(expenses[view]||0)+v*m); saveExp(); if(el)el.value=''; render(); }
     };
+    window.quick = function(n) { if (typeof view==='number') { expenses[view]=Math.max(0,(expenses[view]||0)+n); saveExp(); render(); } };
+    window.openModal = () => document.getElementById('modal').classList.remove('hidden');
+    window.closeModal = () => document.getElementById('modal').classList.add('hidden');
+    window.confirmReset = function() { tripData.forEach(d=>expenses[d.day]=0); saveExp(); closeModal(); render(); };
+    window.go = function(v) { view=v; render(); window.scrollTo({top:0,behavior:'smooth'}); };
 
-    window.updateExpense = function(multiplier) {
-      const input = document.getElementById('expenseAmount');
-      const amount = parseInt(input.value);
-      if (!isNaN(amount) && amount > 0 && typeof currentView === 'number') {
-        processExpenseChange(amount * multiplier);
-        input.value = '';
+    const mapQ = {
+      "出發機場":"Hong Kong International Airport",
+      "Hobart Airport (HBA)":"Hobart Airport Tasmania",
+      "Sixty Six Boutique Apartments":"Sixty Six Boutique Apartments North Hobart",
+      "會議報到":"Hobart Tasmania",
+      "Victoria Dock":"Victoria Dock Hobart",
+      "Perioperative Medicine Conference":"Hobart",
+      "kunanyi / Mount Wellington":"Mount Wellington Pinnacle Tasmania",
+      "Trophy Room":"Trophy Room Hobart",
+      "Salamanca Place":"Salamanca Place Hobart",
+      "Farm Gate Market":"Farm Gate Market Hobart",
+      "取車":"Hobart car rental",
+      "MONA (Museum of Old and New Art)":"MONA Berriedale",
+      "Devil's Corner Cellar Door":"Devils Corner Tasmania",
+      "BIG4 Iluka on Freycinet":"BIG4 Iluka Coles Bay",
+      "Wineglass Bay Lookout":"Wineglass Bay Lookout Freycinet",
+      "The Lobster Shack (Bicheno)":"Lobster Shack Bicheno",
+      "Bicheno Blowhole":"Bicheno Blowhole",
+      "Bay of Fires / Binalong Bay":"Binalong Bay Tasmania",
+      "St Helens":"St Helens Tasmania",
+      "前往 Launceston":"Launceston Tasmania",
+      "Queen Victoria Museum at Inveresk":"Queen Victoria Museum Inveresk",
+      "Tamar Ridge Cellar Door":"Tamar Ridge Cellar Door",
+      "Cataract Gorge Reserve":"Cataract Gorge Launceston",
+      "Launceston 市區":"Launceston",
+      "Western Tiers Distillery":"Western Tiers Distillery",
+      "Ashgrove Cheese":"Ashgrove Cheese Tasmania",
+      "Sheffield 壁畫小鎮":"Sheffield Tasmania",
+      "Dove Lake / Cradle Mountain":"Dove Lake Cradle Mountain",
+      "Discovery Resorts – Cradle Mountain":"Discovery Parks Cradle Mountain",
+      "Enchanted Walk":"Enchanted Walk Cradle Mountain",
+      "Deloraine":"Deloraine Tasmania",
+      "A5 Highland Lakes Road":"Highland Lakes Road Tasmania",
+      "Mantra Hobart Airport":"Mantra Hobart Airport",
+      "Deloraine（加油）":"Deloraine Tasmania",
+      "Miena Dam Lookout":"Miena Dam Lookout, 7562 Highland Lakes Road, Miena TAS",
+      "Great Lake Hotel / Miena":"Great Lake Hotel, Miena TAS",
+      "The Steppes Historic Site":"The Steppes Historic Site, Highland Lakes Road TAS",
+      "Bothwell":"Bothwell Tasmania",
+      "退房還車":"Hobart Airport car rental",
+      "航班起飛":"Hobart Airport"
+    };
+    function mapUrl(loc) { return "https://maps.google.com/?q="+encodeURIComponent(mapQ[loc]||loc+" Tasmania"); }
+    window.openMap = function(loc) {
+      if (!loc) return;
+      const u = mapUrl(loc);
+      console.log('MAP ->', loc, u);
+      let w = null;
+      try { w = window.open(u, '_blank', 'noopener,noreferrer'); } catch(e) {}
+      if (!w || w.closed || typeof w.closed === 'undefined') {
+        try {
+          const a = document.createElement('a');
+          a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer';
+          a.style.display = 'none'; document.body.appendChild(a); a.click();
+          setTimeout(function(){ a.remove(); }, 100);
+        } catch(e2) {
+          if (confirm('無法開啟新分頁，是否在此頁開啟 Google 地圖？\n' + u)) window.location.href = u;
+        }
       }
     };
 
-    window.quickAdd = function(amount) {
-      if (typeof currentView === 'number') {
-        processExpenseChange(amount);
-      }
-    };
-
-    function processExpenseChange(diff) {
-      expenses[currentView] = (expenses[currentView] || 0) + diff;
-      if (expenses[currentView] < 0) expenses[currentView] = 0;
-      
-      localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
-      render();
+    function nav() {
+      return `<div class="bottom-bar max-w-lg mx-auto"><div class="flex justify-around">
+        <button onclick="go('home')" class="nav-btn ${view==='home'?'active':''}"><i data-lucide="home" class="w-5 h-5"></i>Home</button>
+        <button onclick="go(1)" class="nav-btn ${typeof view==='number'?'active':''}"><i data-lucide="map" class="w-5 h-5"></i>Days</button>
+        <button onclick="go('home')" class="nav-btn"><i data-lucide="wallet" class="w-5 h-5"></i>Ledger</button>
+        <button onclick="openModal()" class="nav-btn"><i data-lucide="settings" class="w-5 h-5"></i>Reset</button>
+      </div></div>`;
     }
-
-    window.openResetModal = function() {
-      const modal = document.getElementById('custom-modal');
-      modal.classList.remove('hidden');
-    };
-
-    window.closeResetModal = function() {
-      const modal = document.getElementById('custom-modal');
-      modal.classList.add('hidden');
-    };
-
-    window.confirmReset = function() {
-      expenses = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-      localStorage.setItem('bkk_expenses', JSON.stringify(expenses));
-      closeResetModal();
-      render();
-    };
-
-    function setView(view) {
-      currentView = view;
-      render();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    const getGoogleMapsUrl = (location) => {
-      const query = location.includes("HKG") || location.includes("香港") ? location : `${location} Bangkok`;
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-    };
-
-    const getCategoryStyle = (category) => {
-      const styles = {
-        Flight: { icon: "plane", bg: "bg-[#4D96FF]", text: "text-black" },
-        Airport: { icon: "plane-takeoff", bg: "bg-[#4D96FF]", text: "text-black" },
-        Food: { icon: "utensils", bg: "bg-[#FF6B6B]", text: "text-white" },
-        Architecture: { icon: "landmark", bg: "bg-[#FFD93D]", text: "text-black" },
-        Art: { icon: "palette", bg: "bg-[#6BCB77]", text: "text-black" },
-        Shopping: { icon: "shopping-bag", bg: "bg-[#FF9BE6]", text: "text-black" },
-        Logistics: { icon: "navigation", bg: "bg-[#E5E5E5]", text: "text-black" },
-        Relaxation: { icon: "heart", bg: "bg-[#00E5FF]", text: "text-black" },
-        Entertainment: { icon: "sparkles", bg: "bg-[#FFB703]", text: "text-black" },
-      };
-      return styles[category] || { icon: "map-pin", bg: "bg-white", text: "text-black" };
-    };
 
     function render() {
-      const appDiv = document.getElementById('app');
-      
-      if (currentView === 'home') {
-        const totalSpent = Object.values(expenses).reduce((sum, val) => sum + val, 0);
-        const totalPlanned = tripData.reduce((sum, day) => sum + getPlannedCost(day.day), 0);
-        const percentUsed = Math.min((totalSpent / (totalPlanned || 1)) * 100, 100);
-
-        appDiv.innerHTML = `
-          <div class="border-4 border-black bg-[#FFD93D] p-6 mb-8 brutalist-shadow-lg mt-6">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <span class="font-brutalist text-sm md:text-base font-bold bg-black text-[#FFD93D] px-3 py-1 border-2 border-black uppercase tracking-widest">
-                BANGKOK 2026
-              </span>
-              <span class="font-brutalist text-xs md:text-sm font-bold border-2 border-black px-2 py-1 bg-white">
-                06 SEPT - 10 SEPT
-              </span>
+      const app = document.getElementById('app');
+      if (view === 'home') {
+        const spent = Object.values(expenses).reduce((s,v)=>s+(v||0),0);
+        const plan = tripData.reduce((s,d)=>s+planned(d.day),0);
+        const pct = Math.min(spent/(plan||1)*100,100);
+        app.innerHTML = `
+          <div class="hero-full">
+            <img src="${photos.hero}" alt="Tasmania" loading="eager" onerror="this.onerror=null;this.src='${fb}'">
+            <div class="hero-overlay">
+              <div class="tag tag-accent mb-3">25 NOV – 4 DEC 2026</div>
+              <h1 class="font-serif text-4xl leading-none text-white mb-2">Tasmania</h1>
+              <p class="text-white/60 text-sm font-medium tracking-wide">10 DAYS · SELF DRIVE · EXPEDITION</p>
+              <p class="text-white/40 text-xs mt-3 max-w-xs">Flight → Hobart → Freycinet → Bay of Fires → Tamar → Cradle → A5 → Home</p>
             </div>
-            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-2 uppercase font-sans-custom">
-              Architecture & Cuisine Tour
-            </h1>
-            <p class="font-bold text-sm md:text-base text-slate-800">
-              曼谷經典與當代建築・美學與精緻餐飲自由行 (Local Mode)
-            </p>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            ${tripData.map((day) => {
-              const plannedCost = getPlannedCost(day.day);
-              const actualCost = expenses[day.day] || 0;
-              
-              return `
-                <div class="border-4 border-black bg-white overflow-hidden brutalist-shadow brutalist-shadow-hover transition cursor-pointer flex flex-col" onclick="setView(${day.day})">
-                  <div class="bg-black text-white border-b-4 border-black p-3 font-brutalist font-black flex justify-between items-center">
-                    <span>DAY 0${day.day}</span>
-                    <span class="text-xs border border-black bg-white text-black px-2 py-0.5 rounded-full">${day.date}</span>
-                  </div>
-                  <div class="relative h-40 ${day.pattern} overflow-hidden border-b-2 border-black flex items-center justify-center">
-                    <div class="bg-white border-4 border-black px-6 py-2 brutalist-shadow transform -rotate-3">
-                      <span class="text-3xl font-black font-brutalist tracking-tighter">D${day.day}</span>
-                    </div>
-                    <div class="absolute bottom-2 left-2 bg-black text-white text-xs font-bold px-2 py-1 border border-white">
-                      ${day.activities.length} 活動 (Activities)
-                    </div>
-                  </div>
-                  <div class="p-4 flex-1 flex flex-col justify-between">
-                    <h3 class="text-xl font-extrabold mb-3 line-clamp-1">${day.title}</h3>
-                    <div class="grid grid-cols-2 gap-2 text-xs font-bold bg-slate-50 p-2 border-2 border-black">
-                      <div>
-                        <div class="text-slate-500 uppercase">預估計劃</div>
-                        <div class="text-slate-800">฿ ${plannedCost.toLocaleString()}</div>
-                      </div>
-                      <div>
-                        <div class="text-slate-500 uppercase">目前已花</div>
-                        <div class="text-emerald-600">฿ ${actualCost.toLocaleString()}</div>
+          <div class="px-4 -mt-4 relative z-10 mb-8">
+            <div class="grid grid-cols-3 gap-2 mb-6">
+              <div class="stat-block text-center"><div class="text-2xl font-black text-[#c45c26]">10</div><div class="text-[10px] text-white/40 uppercase tracking-wider mt-1">Days</div></div>
+              <div class="stat-block text-center"><div class="text-2xl font-black text-white">2</div><div class="text-[10px] text-white/40 uppercase tracking-wider mt-1">Parks</div></div>
+              <div class="stat-block text-center"><div class="text-2xl font-black text-white">6</div><div class="text-[10px] text-white/40 uppercase tracking-wider mt-1">Hotels</div></div>
+            </div>
+            <div class="space-y-4 mb-8">
+              ${tripData.map(d => `
+                <div class="day-card" onclick="go(${d.day})">
+                  <div class="day-photo">
+                    <img src="${d.photo}" alt="Day ${d.day}" loading="lazy" onerror="this.onerror=null;this.src='${fb}'">
+                    <div class="day-photo-overlay">
+                      <div class="flex items-end justify-between w-full">
+                        <div>
+                          <div class="text-white/50 text-[11px] font-bold tracking-widest">${d.date}</div>
+                          <div class="text-white font-black text-xl leading-tight">DAY ${String(d.day).padStart(2,'0')}</div>
+                        </div>
+                        <div class="tag">${d.acts.length} STOPS</div>
                       </div>
                     </div>
                   </div>
+                  <div class="p-4">
+                    <h3 class="font-bold text-white text-base">${d.title}</h3>
+                    <p class="text-white/40 text-xs mt-0.5 mb-2">${d.subtitle}</p>
+                    <div class="flex items-center gap-1.5 text-[11px] text-white/30"><i data-lucide="bed" class="w-3 h-3"></i> ${d.hotel}</div>
+                    <div class="flex justify-between mt-3 pt-3 border-t border-white/5 text-xs font-semibold">
+                      <span class="text-white/40">Plan A$ ${planned(d.day)}</span>
+                      <span class="text-[#c45c26]">Spent A$ ${expenses[d.day]||0}</span>
+                    </div>
+                  </div>
                 </div>
-              `;
-            }).join('')}
-          </div>
-
-          <div class="border-4 border-black bg-white p-6 brutalist-shadow-lg mb-8">
-            <div class="flex items-center justify-between border-b-4 border-black pb-4 mb-4">
-              <div class="flex items-center gap-2">
-                <i data-lucide="wallet" class="w-6 h-6"></i>
-                <h2 class="text-xl md:text-2xl font-black font-brutalist tracking-tight">TRIP LEDGER</h2>
-              </div>
-              <button onclick="openResetModal()" class="border-2 border-black bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-3 py-1 text-[10px] sm:text-xs uppercase font-brutalist transition">
-                清除本地記帳
-              </button>
+              `).join('')}
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-amber-50 border-4 border-black p-4 flex flex-col justify-center">
-                <span class="text-xs font-bold text-slate-500 uppercase font-brutalist">累計實際花費 (Total Tracked)</span>
-                <span class="text-3xl md:text-4xl font-black text-black mt-1">฿ ${totalSpent.toLocaleString()}</span>
-                <span class="text-lg font-bold text-slate-600 mt-1">≈ HK$ ${Math.round(totalSpent * EXCHANGE_RATE).toLocaleString()}</span>
+            <div class="stat-block mb-6">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="font-bold text-sm tracking-wide uppercase text-white/80">Ledger</h2>
+                <button onclick="openModal()" class="text-[10px] text-[#c45c26] font-bold uppercase tracking-wider">Reset</button>
               </div>
-              <div class="bg-slate-50 border-4 border-black p-4">
-                <span class="text-xs font-bold text-slate-500 uppercase font-brutalist">預算執行比對 (Budget Summary)</span>
-                <div class="mt-2 space-y-1">
-                  <div class="flex justify-between font-bold text-sm">
-                    <span>原定計劃總花費:</span>
-                    <span>฿ ${totalPlanned.toLocaleString()}</span>
-                  </div>
-                  <div class="flex justify-between font-bold text-sm">
-                    <span>當前記帳花費:</span>
-                    <span>฿ ${totalSpent.toLocaleString()}</span>
-                  </div>
-                  <div class="h-4 w-full bg-slate-200 border-2 border-black mt-2 overflow-hidden">
-                    <div class="h-full bg-emerald-400 border-r-2 border-black transition-all duration-500" style="width: ${percentUsed}%"></div>
-                  </div>
+              <div class="flex justify-between items-end mb-2">
+                <div>
+                  <div class="text-[10px] text-white/30 uppercase tracking-wider">Tracked</div>
+                  <div class="text-3xl font-black text-white">A$ ${spent}</div>
+                  <div class="text-xs text-white/30">≈ HK$ ${Math.round(spent*RATE)}</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[10px] text-white/30 uppercase tracking-wider">Budget</div>
+                  <div class="text-lg font-bold text-white/60">A$ ${plan}</div>
                 </div>
               </div>
+              <div class="progress-bar"><div style="width:${pct}%"></div></div>
             </div>
           </div>
         `;
       } else {
-        const dayData = tripData.find(d => d.day === currentView);
-        const dayExpense = expenses[currentView] || 0;
-        const plannedExpense = getPlannedCost(currentView);
-        const variance = plannedExpense - dayExpense;
-        
-        const activitiesHTML = dayData.activities.map((activity, idx) => {
-          const style = getCategoryStyle(activity.category);
-          return `
-            <div class="flex gap-4 relative">
-              <div class="flex flex-col items-center">
-                <div class="w-10 h-10 border-4 border-black rounded-full flex items-center justify-center ${style.bg} ${style.text} z-10 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                  <i data-lucide="${style.icon}" class="w-5 h-5"></i>
-                </div>
-                ${idx !== dayData.activities.length - 1 ? `<div class="w-1 bg-black flex-1 -my-1"></div>` : ''}
-              </div>
-              <div class="flex-1 border-4 border-black bg-white p-4 mb-6 brutalist-shadow relative">
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                  <span class="font-brutalist font-black text-sm md:text-base text-amber-600 bg-amber-50 px-2 py-0.5 border border-amber-300">
-                    ${activity.time}
-                  </span>
-                  <span class="font-brutalist text-xs font-bold border-2 border-black px-2 py-0.5 bg-slate-100 uppercase">
-                    ${activity.category}
-                  </span>
-                </div>
-                <hr class="border-t-2 border-black border-dashed my-3">
-                <h4 class="text-lg md:text-xl font-extrabold text-slate-900 mb-1">${activity.location}</h4>
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-bold text-slate-500 mb-3">
-                  <span class="flex items-center gap-1">
-                    <i data-lucide="footprints" class="w-3.5 h-3.5"></i> ${activity.transportation}
-                  </span>
-                  ${activity.estimated_cost_thb !== null ? `
-                    <span class="flex items-center gap-1 text-amber-600 font-brutalist">
-                      <i data-lucide="circle-dollar-sign" class="w-3.5 h-3.5"></i> ฿ ${activity.estimated_cost_thb} / 人
-                    </span>
-                  ` : `
-                    <span class="flex items-center gap-1 text-slate-400 font-brutalist">
-                      <i data-lucide="circle-slash" class="w-3.5 h-3.5"></i> 預估：自理/無 (N/A)
-                    </span>
-                  `}
-                </div>
-                <p class="text-sm text-slate-700 bg-slate-50 border border-slate-200 p-2 leading-relaxed mb-4">
-                  ${activity.notes}
-                </p>
-                <a href="${getGoogleMapsUrl(activity.location)}" target="_blank" class="inline-flex items-center gap-2 border-2 border-black bg-white px-3 py-1.5 text-xs font-bold hover:bg-slate-100 transition shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none">
-                  <i data-lucide="map" class="w-4 h-4"></i> 在 Google 地圖中查看
-                </a>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-        appDiv.innerHTML = `
-          <button onclick="setView('home')" class="font-brutalist flex items-center gap-2 border-4 border-black bg-white px-4 py-2 mt-8 md:mt-2 font-black hover:bg-slate-100 transition shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-0.5 active:shadow-none mb-6">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i> BACK TO HOME
-          </button>
-
-          <div class="border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden mb-8">
-            <div class="h-48 md:h-64 relative border-b-4 border-black ${dayData.pattern} flex items-center justify-center">
-              <div class="bg-black text-white px-8 py-3 border-4 border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transform rotate-2">
-                <span class="font-brutalist font-black text-4xl md:text-6xl">DAY ${dayData.day}</span>
-              </div>
-            </div>
-            <div class="p-6 bg-white">
-              <span class="font-brutalist text-sm font-bold text-slate-500">${dayData.date}</span>
-              <h2 class="text-2xl md:text-3xl font-black mt-1 uppercase font-sans-custom">${dayData.title}</h2>
+        const d = tripData.find(x => x.day === view);
+        const spent = expenses[view]||0;
+        const plan = planned(view);
+        const var_ = plan - spent;
+        app.innerHTML = `
+          <div class="relative h-56 overflow-hidden">
+            <img src="${d.photo}" class="w-full h-full object-cover" style="filter:brightness(0.5)" onerror="this.onerror=null;this.src='${fb}'">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-black/40"></div>
+            <button onclick="go('home')" class="absolute top-4 left-4 bg-black/50 backdrop-blur text-white text-xs font-bold px-3 py-2 rounded-sm flex items-center gap-1.5 border border-white/10">
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> BACK
+            </button>
+            <div class="absolute bottom-0 left-0 right-0 p-5">
+              <div class="text-white/40 text-[11px] font-bold tracking-widest mb-1">${d.date}</div>
+              <h1 class="font-serif text-3xl text-white leading-none">Day ${String(d.day).padStart(2,'0')}</h1>
+              <p class="text-white/70 text-sm mt-1">${d.title}</p>
             </div>
           </div>
-
-          <div class="mb-10">
-            <h3 class="text-xl font-black mb-6 border-b-4 border-black pb-2 flex items-center gap-2">
-              <i data-lucide="calendar" class="w-6 h-6"></i> 今日行程時程表 (TIMELINE)
-            </h3>
-            <div class="space-y-2">
-              ${activitiesHTML}
+          <div class="px-4 py-4">
+            <div class="flex items-center gap-2 text-xs text-white/40 mb-6">
+              <i data-lucide="bed" class="w-3.5 h-3.5 text-[#c45c26]"></i> ${d.hotel}
             </div>
-          </div>
-
-          <div class="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-8">
-            <h3 class="font-brutalist text-xl font-bold mb-4 border-b-4 border-black pb-2 flex items-center gap-2">
-              <i data-lucide="dollar-sign" class="w-6 h-6"></i> DAY ${currentView} 本地記帳本
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="bg-slate-50 border-4 border-black p-4 flex flex-col justify-center">
-                <span class="text-xs font-bold text-slate-500 uppercase font-brutalist">當日累計花費 (Total)</span>
-                <div class="text-3xl font-black text-black mt-1 transition-all">฿ ${dayExpense.toLocaleString()}</div>
-                <div class="text-base font-bold text-slate-600 mt-0.5">≈ HK$ ${Math.round(dayExpense * EXCHANGE_RATE).toLocaleString()}</div>
-                <div class="mt-4 pt-4 border-t border-slate-200">
-                  <div class="flex justify-between text-xs text-slate-500 font-bold">
-                    <span>原訂估計花費：</span>
-                    <span class="font-brutalist text-slate-800">฿ ${plannedExpense.toLocaleString()}</span>
+            <div class="text-[10px] font-bold tracking-widest text-white/30 uppercase mb-4">Itinerary</div>
+            <div class="mb-8">
+              ${d.acts.map((a,i) => `
+                <div class="flex gap-4">
+                  <div class="flex flex-col items-center">
+                    <div class="node"></div>
+                    ${i < d.acts.length-1 ? '<div class="timeline-rail flex-1 my-1"></div>' : ''}
                   </div>
-                  <div class="flex justify-between text-xs text-slate-500 font-bold mt-1">
-                    <span>預算差額 (Variance)：</span>
-                    <span class="font-brutalist ${variance >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
-                      ${variance >= 0 ? `餘 ฿ ${variance.toLocaleString()}` : `超 ฿ ${Math.abs(variance).toLocaleString()}`}
-                    </span>
+                  <div class="act-card flex-1 mb-3">
+                    <div class="flex flex-wrap gap-2 mb-2">
+                      <span class="text-[11px] font-bold text-[#c45c26]">${a.t}</span>
+                      <span class="text-[10px] text-white/30 uppercase tracking-wide">${a.cat}</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mb-1">${a.loc}</h4>
+                    <p class="text-xs text-white/40 leading-relaxed mb-3">${a.note}</p>
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-semibold ${a.cost!==null?'text-white/50':'text-white/20'}">${a.cost!==null?'A$ '+a.cost:'N/A'}</span>
+                      <button type="button" onclick="event.stopPropagation();openMap(this.dataset.loc)" data-loc="${a.loc.replace(/"/g,'&quot;')}" class="btn-primary text-[10px] py-1.5 px-3">📍 MAP</button>
+                    </div>
                   </div>
                 </div>
+              `).join('')}
+            </div>
+            <div class="stat-block mb-6">
+              <div class="text-[10px] font-bold tracking-widest text-white/30 uppercase mb-3">Day ${view} Spend</div>
+              <div class="text-3xl font-black text-white mb-1">A$ ${spent}</div>
+              <div class="text-xs text-white/30 mb-4">≈ HK$ ${Math.round(spent*RATE)} · Budget A$ ${plan} · <span class="${var_>=0?'text-emerald-400':'text-[#c45c26]'}">${var_>=0?'Left ':'Over '}${Math.abs(var_)}</span></div>
+              <input type="number" id="amt" placeholder="Amount AUD" min="1" class="mb-3">
+              <div class="flex gap-2 mb-3">
+                <button onclick="addExp(1)" class="btn-primary flex-1">Add</button>
+                <button onclick="addExp(-1)" class="btn-outline flex-1">Deduct</button>
               </div>
-              <div>
-                <label class="block text-sm font-bold mb-1 font-brutalist uppercase tracking-wider">輸入金額 (THB):</label>
-                <div class="flex gap-2 mb-3">
-                  <input type="number" id="expenseAmount" placeholder="100" min="1" class="flex-1 border-4 border-black p-2 font-brutalist text-lg focus:outline-none focus:bg-amber-50 w-full min-w-0">
-                  <button onclick="updateExpense(1)" class="border-4 border-black bg-[#6BCB77] text-black font-black px-3 sm:px-4 hover:bg-[#5bb767] transition active:translate-y-0.5">新增</button>
-                  <button onclick="updateExpense(-1)" class="border-4 border-black bg-[#FF6B6B] text-white font-black px-3 sm:px-4 hover:bg-[#ec5a5a] transition active:translate-y-0.5">扣除</button>
-                </div>
-                <span class="block text-xs font-bold text-slate-500 uppercase font-brutalist mb-2">快速加入 (Quick Add)</span>
-                <div class="grid grid-cols-4 gap-2">
-                  <button onclick="quickAdd(50)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+50</button>
-                  <button onclick="quickAdd(100)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+100</button>
-                  <button onclick="quickAdd(500)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+500</button>
-                  <button onclick="quickAdd(1000)" class="border-2 border-black bg-slate-100 py-2 text-xs font-bold font-brutalist hover:bg-slate-200 transition active:translate-y-0.5">+1K</button>
-                </div>
+              <div class="grid grid-cols-4 gap-2">
+                ${[20,50,100,200].map(n=>`<button onclick="quick(${n})" class="btn-outline py-2 text-xs">+${n}</button>`).join('')}
               </div>
             </div>
           </div>
         `;
       }
-      lucide.createIcons();
+      const n = document.createElement('div'); n.innerHTML = nav();
+      if (n.firstElementChild) app.appendChild(n.firstElementChild);
+      try { if (typeof lucide!=='undefined') lucide.createIcons(); } catch(e){}
     }
 
-    window.onload = loadLocalData;
+    function init() {
+      try { loadExp(); render(); }
+      catch(e) {
+        document.getElementById('app').innerHTML = `<div style="padding:48px 24px;color:#fff;text-align:center"><h1 style="font-size:24px;font-weight:800">TASMANIA</h1><p style="opacity:0.5;margin-top:8px">Load error</p><pre style="font-size:11px;margin-top:16px;text-align:left;opacity:0.4">${e.message}</pre></div>`;
+      }
+    }
+    if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
   </script>
 </body>
 </html>
